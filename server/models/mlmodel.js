@@ -8,11 +8,11 @@ var mlmodelSchema = new Schema({
   type: { type: String, required: true },
   meta: {
     parameters: String
+    train_status: String,
+    deploy_status: String,
+    train_accuracy: String,
+    test_accuracy: String,
   },
-  train_status: String,
-  deploy_status: String,
-  train_accuracy: String,
-  test_accuracy: String,
   created_at: Date,
   updated_at: Date
 });
