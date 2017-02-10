@@ -1,19 +1,21 @@
-<header class="header-6">
-	<div class="branding">
-		<a href="/" class="nav-link">
-			<clr-icon shape="caret left"></clr-icon>
-			<span class="title">{{title}}</span>
-			<clr-icon shape="caret right"></clr-icon>
-		</a>
-	</div>
-	<div class="header-nav">
-		<a routerLink="/models" [class.active]="isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">models</span></a>
-		<a routerLink="/logs" [class.active]="!isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">logs</span></a>
-	</div>
-	<div class="header-actions">
-		<a routerLink="" class="nav-link nav-icon">
-			<clr-icon shape="cog"></clr-icon>
-		</a>
-	</div>
-</header>
-<router-outlet></router-outlet>
+<div class="main-container">
+	<header class="header">
+		<div class="branding">
+			<a href="/" class="nav-link">
+				<clr-icon shape="caret left"></clr-icon>
+				<span class="title">{{title}}</span>
+				<clr-icon shape="caret right"></clr-icon>
+			</a>
+		</div>
+		<div class="header-nav">
+			<a routerLink="/models" [class.active]="isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">models</span></a>
+			<a routerLink="/logs" [class.active]="!isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">logs</span></a>
+		</div>
+		<div class="header-actions">
+			<a routerLink="" class="nav-link nav-icon">
+				<clr-icon shape="cog"></clr-icon>
+			</a>
+		</div>
+	</header>
+	<router-outlet></router-outlet>
+</div>

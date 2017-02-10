@@ -11,5 +11,23 @@ export class ModelsComponent implements OnInit {
 
   ngOnInit() {
   }
+  models: any[] = [
+    {
+      name: "Water Heater",
+      active: true
+    },
+    {
+      name: "IOT Swarm",
+      active: false
+    },
+    {
+      name: "Thermostat Model",
+      active: false
+    },
+    {
+      name: "Door Camera",
+      active: false
+    },
+  ];
 
 }

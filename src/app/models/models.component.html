@@ -1,3 +1,14 @@
-<p>
-  models works!
-</p>
+<div class="content-container">
+  <div class="content-area">
+    <p>
+      models works!
+    </p>
+  </div>
+  <nav class="sidenav">
+    <clr-tree-node *ngFor="let model of models">
+      <button (click)="edit_model(model.name)" class="clr-treenode-link" [class.active]="model.active">
+          {{model.name}}
+        </button>
+    </clr-tree-node>
+  </nav>
+</div>

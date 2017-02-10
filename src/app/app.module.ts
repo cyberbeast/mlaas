@@ -28,7 +28,12 @@ import { LogsComponent } from './logs/logs.component';
       {
         path: 'logs',
         component: LogsComponent
-      }
+      },
+      {
+        path: '',
+        redirectTo: '/models',
+        pathMatch: 'full'
+      },
     ])
   ],
   providers: [],
