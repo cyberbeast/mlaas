@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Wizard } from 'clarity-angular';
 
 @Component({
   selector: 'app-models',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./models.component.css']
 })
 export class ModelsComponent implements OnInit {
+  @ViewChild("wizard") wizard: Wizard;
+    open: boolean = false; // you can open the wizard by setting this variable to true
 
   constructor() { }
 

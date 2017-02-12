@@ -1,14 +1,33 @@
-<div class="content-container">
-  <div class="content-area">
-    <p>
-      models works!
-    </p>
-  </div>
-  <nav class="sidenav">
+<div style="padding-top: 1%;" class="content-container">
+<nav class="sidenav">
+    <clr-tree-node style="text-align: center;">
+      <button (click)="wizard.open()" class="btn btn-primary">NEW MODEL</button>
+    </clr-tree-node>
+   
     <clr-tree-node *ngFor="let model of models">
       <button (click)="edit_model(model.name)" class="clr-treenode-link" [class.active]="model.active">
           {{model.name}}
         </button>
     </clr-tree-node>
   </nav>
+  <div class="content-area">
+    <p>
+      models works!
+    </p>
+    <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="'lg'">
+    <div class="wizard-title">Add New Model</div>
+
+    <clr-wizard-step>Metadata</clr-wizard-step>
+    <clr-wizard-step>Parameters</clr-wizard-step>
+    <clr-wizard-step>Data</clr-wizard-step>
+    <clr-wizard-step>Review</clr-wizard-step>
+
+    <clr-wizard-page>Metadata controls go here...</clr-wizard-page>
+    <clr-wizard-page>Parameters controls go here...</clr-wizard-page>
+    <clr-wizard-page>Data controls go here...</clr-wizard-page>
+    <clr-wizard-page>Review controls go here...</clr-wizard-page>
+    
+</clr-wizard>
+  </div>
+
 </div>
