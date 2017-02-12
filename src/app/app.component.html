@@ -7,9 +7,8 @@
 				<clr-icon shape="caret right"></clr-icon>
 			</a>
 		</div>
-		<div class="header-nav">
-			<a routerLink="/models" [class.active]="isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">models</span></a>
-			<a routerLink="/logs" [class.active]="!isVisible" class="nav-link" (click)="isVisible = !isVisible;"><span class="nav-text">logs</span></a>
+		<div class="header-nav" *ngFor="let item of header_items">
+			<a routerLink="{{item.link}}" [class.active]="item.visible" class="nav-link" (click)="setActive(item.id)"><span class="nav-text">{{item.name}}</span></a>
 		</div>
 		<div class="header-actions">
 			<a routerLink="" class="nav-link nav-icon">

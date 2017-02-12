@@ -8,12 +8,14 @@ import { ClarityModule } from 'clarity-angular';
 import { AppComponent } from './app.component';
 import { ModelsComponent } from './models/models.component';
 import { LogsComponent } from './logs/logs.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModelsComponent,
-    LogsComponent
+    LogsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -21,6 +23,10 @@ import { LogsComponent } from './logs/logs.component';
     HttpModule,
     ClarityModule.forRoot(),
     RouterModule.forRoot([
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
       {
         path: 'models',
         component: ModelsComponent
@@ -31,7 +37,7 @@ import { LogsComponent } from './logs/logs.component';
       },
       {
         path: '',
-        redirectTo: '/models',
+        redirectTo: '/dashboard',
         pathMatch: 'full'
       },
     ])

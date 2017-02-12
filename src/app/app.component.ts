@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { HeaderNavItem } from './header-nav-item';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,18 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'MLAAS';
-  isVisible = true;
+
+  header_items = [
+    new HeaderNavItem(0, 'dashboard', '/dashboard', true),
+    new HeaderNavItem(1, 'models', '/models', false),
+    new HeaderNavItem(2, 'logs', '/logs', false),
+  ];
+
+  setActive(id) {
+    for (let items of this.header_items) {
+      items.visible = false;
+    }
+    this.header_items[id].visible = true;
+  };
+
 }
