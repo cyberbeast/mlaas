@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { ModelsComponent } from './models/models.component';
 import { LogsComponent } from './logs/logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ModelsDetailComponent } from './models/models-detail/models-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModelsComponent,
     LogsComponent,
-    DashboardComponent
+    DashboardComponent,
+    ModelsDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
       },
       {
         path: 'models',
+        component: ModelsComponent
+      },
+      {
+        path: 'model/:id',
         component: ModelsComponent
       },
       {
