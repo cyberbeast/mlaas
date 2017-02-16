@@ -1,75 +1,43 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ActivatedRoute, Params , Router} from '@angular/router';
+import { Location } from '@angular/common';
+import 'rxjs/add/operator/switchMap';
 import { Wizard } from 'clarity-angular';
 import { ModelClass } from './model-class';
-
-const DEMO_MODELS: ModelClass[] = [
-  { _id: "OISAJFKALJS",
-    name: "Water Heater",
-    type: "Linear Regression",
-    parameters: "a=0.05",
-    train_status: "Trained",
-    deploy_status: "OFFLINE",
-    test_accuracy: "88%",
-    created_at: 2017,
-    updated_at: 2017},
-    { _id: "OISAJFKALSD",
-    name: "IoT Swarm",
-    type: "SVM",
-    parameters: "a=0.05",
-    train_status: "Trained",
-    deploy_status: "OFFLINE",
-    test_accuracy: "88%",
-    created_at: 2017,
-    updated_at: 2017},
-    { _id: "OISAJFKALFD",
-    name: "Thermostat Model",
-    type: "Linear Regression",
-    parameters: "a=0.05",
-    train_status: "Trained",
-    deploy_status: "OFFLINE",
-    test_accuracy: "88%",
-    created_at: 2017,
-    updated_at: 2017},
-]
+import { ModelService } from '../model-service.service';
 
 @Component({
   selector: 'app-models',
+  providers: [ModelService],
   templateUrl: './models.component.html',
   styleUrls: ['./models.component.css']
 })
 export class ModelsComponent implements OnInit {
-  models = DEMO_MODELS;
-
+  models: ModelClass[];
   selectedModel: ModelClass;
+
+  getModels(): void {
+    this.modelservice.getModels().then(models_result => this.models = models_result);
+  }
   
-  onSelect(model: ModelClass): void {
-    this.selectedModel = model;
+  gotoDetail(selectedModelIP: ModelClass): void {
+    this.router.navigate(['models', selectedModelIP._id])
   }
 
   @ViewChild("wizard") wizard: Wizard;
-    open: boolean = false; // you can open the wizard by setting this variable to true
+  open: boolean = false; // you can open the wizard by setting this variable to true
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private modelservice: ModelService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
 
   ngOnInit() {
+    this.getModels();
+    this.route.params
+    .switchMap((params: Params) => this.modelservice.getModel(params['id']))
+    .subscribe(model_ret => this.selectedModel = model_ret);
   }
-  // models: any[] = [
-  //   {
-  //     name: "Water Heater",
-  //     active: true
-  //   },
-  //   {
-  //     name: "IOT Swarm",
-  //     active: false
-  //   },
-  //   {
-  //     name: "Thermostat Model",
-  //     active: false
-  //   },
-  //   {
-  //     name: "Door Camera",
-  //     active: false
-  //   },
-  // ];
-
 }

@@ -4,7 +4,7 @@
       <button (click)="wizard.open()" class="btn btn-primary">NEW MODEL</button>
     </clr-tree-node>
     <clr-tree-node *ngFor="let model of models">
-      <button (click)="onSelect(model)" class="clr-treenode-link" [class.active]="model.active">
+      <button (click)="gotoDetail(model)" class="clr-treenode-link" [class.active]="model.active">
           {{model.name}}
         </button>
     </clr-tree-node>
@@ -27,4 +27,3 @@
     </clr-wizard>
   </div>
 </div>
-

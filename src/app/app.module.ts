@@ -34,7 +34,7 @@ import { ModelsDetailComponent } from './models/models-detail/models-detail.comp
         component: ModelsComponent
       },
       {
-        path: 'model/:id',
+        path: 'models/:id',
         component: ModelsComponent
       },
       {

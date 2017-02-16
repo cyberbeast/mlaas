@@ -17,13 +17,13 @@
             </div>
           </div>
           <div class="card-text">
-            More content here....
+            {{model._id}}
           </div>
         </div>
         <div class="card-footer">
           <a class="btn btn-primary">Expose</a>
           <!--<button class="btn btn-sm btn-link">Expose</button>-->
-          <button class="btn btn-sm btn-link" [routerLink]="['/model', model._id]">Edit</button>
+          <a class="btn btn-sm btn-link" [routerLink]="['/models', model._id]">Edit</a>
         </div>
       </a>
     </div>
