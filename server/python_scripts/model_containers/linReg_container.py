@@ -21,6 +21,31 @@ class linear_regression:
         print self.model.coef_
         print "New model Loaded"
         return 0
+    
+    def accuracy(self,x,y):
+        y=[float(i) for i in y]
+        pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
+        self.model = pickle.load(pkl_file)
+        y_pred=self.model.predict(x)
+        acc=0
+        for i in range(0,len(y_pred)):
+            print y_pred[i],y[i]
+            if y_pred[i]==y[i]:
+                print "yello"
+                acc+=1
+        return ((acc/len(y_pred))*100)
+
+
+    
+    def attr(self):
+        coef=self.model.coef_
+        intercept=self.model.intercept_
+        return coef,intercept
+    
+    def score(self,x,y):
+        score=self.model.score(x,y)
+        return score
+
 
     def create(self):
         self.model=LinearRegression(copy_X=self.copy_x,fit_intercept=self.intercept,normalize=self.normalize,n_jobs=self.n_jobs)
@@ -65,7 +90,7 @@ if __name__=="__main__":
     first_try.fit(x,y)
 
     #Define predicton values
-    x_pred=[[3,3],[4,4]]
+    x_pred=[[3,3],[4,4],[2,2]]
     y_pred=first_try.predict(x_pred)
 
     print y_pred
@@ -77,3 +102,11 @@ if __name__=="__main__":
 
     # Fetching from old data
     first_try.fetch()
+    print first_try.attr()
+    print first_try.score(x,y_pred)
+
+    # predicting accuracy
+    val_x=[[3,3],[5,5],[8,8],[9,9]]
+    val_y=[3,5,8,3]
+    #Validation accuracy
+    print first_try.accuracy(val_x,val_y)
