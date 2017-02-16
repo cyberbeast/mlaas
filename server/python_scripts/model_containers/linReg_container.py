@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import pandas as pd
 from sklearn import datasets
@@ -17,9 +18,7 @@ class linear_regression:
     def fetch(self):
         pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
         self.model = pickle.load(pkl_file)
-        print self.model.coef_
-        print "New model Loaded"
-        return 0
+        print("New model Loaded")
     
     def accuracy(self,x,y):
         y=[float(i) for i in y]
@@ -28,10 +27,9 @@ class linear_regression:
         y_pred=self.model.predict(x)
         acc=0
         for i in range(0,len(y_pred)):
-            print y_pred[i],y[i]
-            if y_pred[i]==y[i]:
+            if int(y_pred[i]-y[i])==0:
                 acc+=1
-        return ((acc/len(y_pred))*100)
+        return ((float(acc)/len(y_pred))*100)
 
 
     
@@ -48,14 +46,12 @@ class linear_regression:
     def create(self):
         self.model=LinearRegression(copy_X=self.copy_x,fit_intercept=self.intercept,normalize=self.normalize,n_jobs=self.n_jobs)
         self.save()
-        return 0
 
 
     def fit(self,x,y):
         pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
         self.model = pickle.load(pkl_file)
         self.model.fit(x,y)
-        return "Train Accuracy"
     
     def predict(self,x_pred):
         y=self.model.predict(x_pred)
@@ -67,12 +63,11 @@ class linear_regression:
         pickle_obj = open(pickle_name, 'wb')
         pickle.dump(self.model, pickle_obj)
         print("Pickle file created with name: "+pickle_name)
-        return 0
     
 
     def delete(self):
         os.remove(os.path.join(os.getcwd(),str(self.name)+'.pkl'))
-        print "File deleted"
+        print("File deleted")
         return 0
 
 
@@ -91,7 +86,7 @@ if __name__=="__main__":
     x_pred=[[3,3],[4,4],[2,2]]
     y_pred=first_try.predict(x_pred)
 
-    print y_pred
+    print(y_pred)
     #save model (optional)
     first_try.save()
     
@@ -100,12 +95,12 @@ if __name__=="__main__":
 
     # Fetching from old data
     first_try.fetch()
-    print first_try.attr()
-    print first_try.score(x,y_pred)
+    print(first_try.attr())
+    print(first_try.score(x,y_pred))
 
     # predicting accuracy
     val_x=[[3,3],[5,5],[8,8],[9,9]]
     val_y=[3,5,8,3]
     #Validation accuracy
-    print first_try.accuracy(val_x,val_y)
+    print(first_try.accuracy(val_x,val_y))
 
