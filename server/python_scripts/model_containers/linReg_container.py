@@ -31,7 +31,6 @@ class linear_regression:
         for i in range(0,len(y_pred)):
             print y_pred[i],y[i]
             if y_pred[i]==y[i]:
-                print "yello"
                 acc+=1
         return ((acc/len(y_pred))*100)
 
