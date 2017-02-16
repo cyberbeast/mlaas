@@ -1,18 +1,18 @@
 <div style="padding-left:2%; padding-right: 2%;">
   <div class="row">
-    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let model of models">
       <a href="" class="card clickable">
         <div class="card-header">
-          Model Name
+          {{model.name}}
         </div>
         <div class="card-block">
           <div class="card-media-block">
             <div class="card-media-description">
               <span class="card-media-title">
-                            Model Type
+                            {{model.type}}
               </span>
               <span class="card-media-text">
-                            Created:
+                            {{model.created_at}}
               </span>
             </div>
           </div>
@@ -23,9 +23,11 @@
         <div class="card-footer">
           <a class="btn btn-primary">Expose</a>
           <!--<button class="btn btn-sm btn-link">Expose</button>-->
-          <button class="btn btn-sm btn-link" [routerLink]="['/model', model.id]">Edit</button>
+          <button class="btn btn-sm btn-link" [routerLink]="['/model', model._id]">Edit</button>
         </div>
       </a>
     </div>
+
+    
   </div>
 </div>
