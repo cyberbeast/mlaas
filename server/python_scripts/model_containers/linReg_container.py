@@ -110,3 +110,4 @@ if __name__=="__main__":
     val_y=[3,5,8,3]
     #Validation accuracy
     print first_try.accuracy(val_x,val_y)
+
