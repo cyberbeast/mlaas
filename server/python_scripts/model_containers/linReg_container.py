@@ -4,7 +4,6 @@ from sklearn import datasets
 from sklearn.linear_model import LinearRegression
 import pickle
 import os
-
 class linear_regression:
     model=0
     def __init__(self,name,fit_intercept=True,normalize=False,copy_X=True,n_jobs=1):
