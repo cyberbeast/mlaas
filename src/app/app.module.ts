@@ -11,6 +11,8 @@ import { LogsComponent } from './logs/logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ModelsDetailComponent } from './models/models-detail/models-detail.component';
 
+import { InitService } from './init.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +50,9 @@ import { ModelsDetailComponent } from './models/models-detail/models-detail.comp
       },
     ])
   ],
-  providers: [],
+  providers: [
+    InitService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
