@@ -1,5 +1,7 @@
 import unittest
+from model_containers import linReg_container
 
-from model_containers import linear_regression
-
+class TestCRUDFunctionality(unittest.TestCase):
+    def test_accuracy_empty(self):
+        pass
 

@@ -19,6 +19,7 @@ class linear_regression:
         pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
         self.model = pickle.load(pkl_file)
         print("New model Loaded")
+        return self._attr()
     
     def accuracy(self,x,y):
         y=[float(i) for i in y]
@@ -33,7 +34,7 @@ class linear_regression:
 
 
     
-    def attr(self):
+    def _attr(self):
         coef=self.model.coef_
         intercept=self.model.intercept_
         return coef,intercept
