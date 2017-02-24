@@ -16,11 +16,12 @@ from abc import ABCMeta, abstractmethod
 
 class ModelContainer(metaclass=ABCMeta):
 	
-	def __init__(self, name, metadata):
-		self.train_status = metadata["train_status"]
-        self.deploy_status = metadata["deploy_status"]
-        self.training_acc = metadata["training_acc"]
-        self.validation_acc = metadata["val_acc"]
+	def __init__(self, metadata=None):
+		if metadata:
+			self.train_status = metadata["train_status"]
+			self.deploy_status = metadata["deploy_status"]
+			self.training_acc = metadata["training_acc"]
+			self.validation_acc = metadata["val_acc"]
         
 
 

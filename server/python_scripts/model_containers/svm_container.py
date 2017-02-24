@@ -9,6 +9,7 @@
 ###############################################################################
 
 from __future__ import print_function
+from .model_container import ModelContainer
 import numpy as np
 import os
 from os.path import join
@@ -17,7 +18,7 @@ from sklearn.svm import SVC as svc
 
 class SVMContainer(ModelContainer):
 	
-	def __init__(self, metadata):
+	def __init__(self, metadata=None):
 		super().__init__(metadata)
 
 
@@ -31,7 +32,7 @@ class SVMContainer(ModelContainer):
 	'''train: train the model on the features and labels provided in the api
 	request and compute the training and validation accuracy. Params: [], 
 	Return: '''
-	def train(self, trainset, valset):
+	def train(self, trainset, valset=None):
 		pass
 
 	'''predict: perform inference on the data samples provided in the api 
