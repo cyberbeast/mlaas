@@ -1,7 +1,11 @@
 import unittest
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import os
 from model_containers import linReg_container
 
-class TestCRUDFunctionality(unittest.TestCase):
-    def test_accuracy_empty(self):
-        pass
+class TestLinearRegression(unittest.TestCase):
+    
+    def test_train(self):
+       pass 
 
