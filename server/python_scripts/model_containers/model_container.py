@@ -22,6 +22,11 @@ class ModelContainer(metaclass=ABCMeta):
 			self.deploy_status = metadata["deploy_status"]
 			self.training_acc = metadata["training_acc"]
 			self.validation_acc = metadata["val_acc"]
+		else:
+			self.train_status = None
+			self.deploy_status = None
+			self.training_acc = None
+			self.validation_acc = None
         
 
 

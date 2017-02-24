@@ -33,7 +33,7 @@ class SVMContainer(ModelContainer):
 	request and compute the training and validation accuracy. Params: [], 
 	Return: '''
 	def train(self, trainset, valset=None):
-		pass
+		assert self.train_status != None, "This container's train status has not been activated"
 
 	'''predict: perform inference on the data samples provided in the api 
 	request using the trained model'''
