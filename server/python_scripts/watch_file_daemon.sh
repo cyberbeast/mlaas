@@ -3,18 +3,21 @@
 sha=0
 previous_sha=0
 file_list=`echo ./model_containers/svm_container.py`
-cmd="PYTHON_PATH=. python unit_tests/test_svm_container.py"
+cmd="env PYTHONPATH=. python unit_tests/test_svm_container.py"
+
 update_sha(){
     sha=`cat $file_list | sha1sum`
 }
 
 build(){
-    x=`echo $cmd`
+    echo -e "\nMonitor: Building.."
+    $cmd
+    echo -e "\nMonitor: watching files.."
     
 }
 
 changed(){
-    echo -e "\nMonitor: Files Changed, Building.."
+    echo -e "\nMonitor: Files Changed.."
     build
     previous_sha=$sha
 }
