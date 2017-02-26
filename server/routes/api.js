@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const mlmodel = require('../models/mlmodel');
 const initstatus = require('../models/initstatusmodel');
+
+
 // var cors = require('cors');
 
 const router = express.Router();
@@ -26,11 +28,13 @@ router.get('/', (req, res) => {
 
 // GET route for checking cold start condition
 router.get('/initStatus', (req, res) => {
+  console.log('REQ: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
   initstatus.find({}, function(err, status){
     if (err) throw err;
-    console.log(status);
+    console.log('\t ----→ ' + status[0].cold_start);
+    
+    res.send(status[0].cold_start);
   });
-  res.send(true);
 });
 
 // GET route for retrieving all user models

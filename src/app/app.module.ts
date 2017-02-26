@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ModelsDetailComponent } from './models/models-detail/models-detail.component';
 
 import { InitService } from './init.service';
+import { ModelService } from './model-service.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { InitService } from './init.service';
       },
       {
         path: 'models/:id',
-        component: ModelsComponent
+        component: ModelsComponent,
       },
       {
         path: 'logs',
@@ -52,6 +53,7 @@ import { InitService } from './init.service';
   ],
   providers: [
     InitService,
+    // ModelService
   ],
   bootstrap: [AppComponent]
 })

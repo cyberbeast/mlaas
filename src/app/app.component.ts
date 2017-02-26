@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderNavItem } from './header-nav-item';
+import { InitService } from './init.service';
 
 @Component({
   selector: 'app-root',
+  // providers: [InitService],ng 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

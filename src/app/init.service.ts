@@ -1,19 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class InitService {
-  private initUrl = 'http://localhost:3000/api/initStatus'
+  private initUrl = 'http://localhost:3000/api/initStatus';
+  
+  // Observable boolean sources
+  public triggerColdStartSource: Subject<boolean> = new BehaviorSubject<boolean>(null);
+
+  // Service message commands
+  announceColdStart(status: boolean) {
+    this.triggerColdStartSource.next(status);
+  }
+
 
   constructor(private http: Http) { }
 
-  getColdStartStatus(): Promise<boolean> {
+  getColdStartStatus(): Observable<boolean> {
     return this.http.get(this.initUrl)
-                    .toPromise()
-                    .then(response => response.json().data as boolean)
-                    .catch(this.handleError);
+                    .map((res:Response) => res.json());
   }
 
   private handleError(error: any): Promise<any> {
