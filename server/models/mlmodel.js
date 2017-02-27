@@ -12,6 +12,7 @@ var mlmodelSchema = new Schema({
     deploy_status: String,
     train_accuracy: String,
     test_accuracy: String,
+    description: String,
   },
   created_at: Date,
   updated_at: Date

@@ -1,8 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const mlmodel = require('../models/mlmodel');
+const initstatus = require('../models/initstatusmodel');
+
+
+// var cors = require('cors');
 
 const router = express.Router();
+
+// FOR DEVELOPMENT PURPOSES ONLY! COMMENT FOR PRODUCTION!
+router.use(function(req, res, next) {  
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Connect to database
@@ -13,6 +24,17 @@ mongoose.connect('mongodb://localhost')
 // GET api listing
 router.get('/', (req, res) => {
   res.send('api works');
+});
+
+// GET route for checking cold start condition
+router.get('/initStatus', (req, res) => {
+  console.log('REQ: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+  initstatus.find({}, function(err, status){
+    if (err) throw err;
+    console.log('\t ----→ ' + status[0].cold_start);
+    
+    res.send(status[0].cold_start);
+  });
 });
 
 // GET route for retrieving all user models

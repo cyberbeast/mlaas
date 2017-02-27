@@ -11,6 +11,9 @@ import { LogsComponent } from './logs/logs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ModelsDetailComponent } from './models/models-detail/models-detail.component';
 
+import { InitService } from './init.service';
+import { ModelService } from './model-service.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,7 @@ import { ModelsDetailComponent } from './models/models-detail/models-detail.comp
       },
       {
         path: 'models/:id',
-        component: ModelsComponent
+        component: ModelsComponent,
       },
       {
         path: 'logs',
@@ -48,7 +51,10 @@ import { ModelsDetailComponent } from './models/models-detail/models-detail.comp
       },
     ])
   ],
-  providers: [],
+  providers: [
+    InitService,
+    // ModelService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

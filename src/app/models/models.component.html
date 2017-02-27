@@ -14,7 +14,7 @@
       Model Editor - Master/Detail Frontpage
     </p>
     <app-models-detail [model]="selectedModel"></app-models-detail>
-    <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="'lg'">
+    <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="closable" [clrWizardSize]="'lg'" (clrWizardOnCancel)="onCancel()">
       <div class="wizard-title">Add New Model</div>
       <clr-wizard-step>Metadata</clr-wizard-step>
       <clr-wizard-step>Parameters</clr-wizard-step>

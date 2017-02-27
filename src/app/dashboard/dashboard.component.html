@@ -1,4 +1,15 @@
 <div style="padding-left:2%; padding-right: 2%;">
+  <clr-modal [(clrModalOpen)]="coldStart" [clrModalClosable]="false">
+    <h3 class="modal-title">Hey there :)</h3>
+    <div class="modal-body">
+      <p>First time here? Welcome to MLAAS. Click the button below to build your first learning model.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="proceed()">
+            NEW
+        </button>
+    </div>
+  </clr-modal>
   <div class="row">
     <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let model of models">
       <a href="" class="card clickable">
@@ -28,6 +39,6 @@
       </a>
     </div>
 
-    
+
   </div>
 </div>
