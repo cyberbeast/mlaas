@@ -9,6 +9,8 @@
 # 	provided through the api endpoint
 # 2) predict: perform inference on the data provided by the api endpoint using
 # 	the model associated with the container in question
+# 3) evaluate: evaluate the loss and other metrics associated with the model
+#   container
 ###############################################################################
 
 from __future__ import print_function
@@ -41,4 +43,9 @@ class ModelContainer(metaclass=ABCMeta):
 	@abstractmethod
 	def predict(self, data_feats, weights_path):
 		pass
-	
+
+    '''evaluate: evaluate the loss and other metrics associated with the model
+    container'''
+    @abstractmethod
+    def evaluate(model_store_path, metrics):
+	    pass
