@@ -5,10 +5,9 @@
 # 
 # File Description: This script serves as a template/interface for a model 
 # container. It includes the following methods:
-# 1) train: train the model corresponding to the container queried with data
-# 	provided through the api endpoint
-# 2) predict: perform inference on the data provided by the api endpoint using
-# 	the model associated with the container in question
+# 1) train: train the model corresponding to the container
+# 2) predict: perform inference on data using the model associated with the 
+#   container in question
 # 3) evaluate: evaluate the loss and other metrics associated with the model
 #   container
 ###############################################################################
@@ -18,34 +17,21 @@ from abc import ABCMeta, abstractmethod
 
 class ModelContainer(metaclass=ABCMeta):
 	
-	def __init__(self, metadata=None):
-		if metadata:
-			self.train_status = metadata["train_status"]
-			self.deploy_status = metadata["deploy_status"]
-			self.training_acc = metadata["training_acc"]
-			self.validation_acc = metadata["val_acc"]
-		else:
-			self.train_status = None
-			self.deploy_status = None
-			self.training_acc = None
-			self.validation_acc = None
-        
-
-
-	'''train: train the model on the features and labels provided in the api
-	request and compute the training and validation accuracy.'''
+	'''train: pull the model parameters from the database, fetch relevant 
+    featuresand labels through the data processing interface, train the model 
+    and return the computed training and validation accuracy.'''
 	@abstractmethod
-	def train(self, trainset, valset, parameters):
+	def train(self, model_id):
 		pass
 
-	'''predict: perform inference on the data samples provided in the api 
-	request using the trained model'''
+	'''predict: pull the model weights from the database, perform inference on 
+    the data samples provided in the api request using the trained model'''
 	@abstractmethod
-	def predict(self, data_feats, weights_path):
+	def predict(self, model_id):
 		pass
 
     '''evaluate: evaluate the loss and other metrics associated with the model
     container'''
     @abstractmethod
-    def evaluate(model_store_path, metrics):
+    def evaluate(self, model_id):
 	    pass
