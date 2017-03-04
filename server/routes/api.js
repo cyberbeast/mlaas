@@ -34,6 +34,7 @@ router.get('/initStatus', (req, res) => {
     console.log('\t ----→ ' + status[0].cold_start);
     
     res.send(status[0].cold_start);
+    // res.send(false);
   });
 });
 
