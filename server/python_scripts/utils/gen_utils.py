@@ -11,28 +11,22 @@ from __future__ import print_function
 from pickle import load, dump
 
 '''loads a pickle from a specified path'''
-def load_pkl(path, verbose=False):
+def load_pkl(path):
 
     try:
-        data = load(path)
+        return load(path)
+
     except (OSError, IOError) as io_e:
         print("\nPath to data is incorrect. Raised the following exception:\
                 \n{}".format(io_e))
     except Exception as e:
-        print("\nThe following exception was raised:\n{}"format(e))
-    
-    if verbose:
-        print("\nData loaded successfully from {}".format(path))
-
-    return data
+        print("\nThe following exception was raised:\n{}".format(e))
 
 '''saves the data at the specified path'''
-def save_pkl(data, path, verbose=False):
+def save_pkl(data, path):
     
     try:
-        data = dump(data, path)
+        dump(data, path)
+
     except Exception as e:
         print("\nThe following exception was raised:\n{}".format(e))
-    
-    if verbose:
-        print("\nData was successfully saved at {}".format(path))

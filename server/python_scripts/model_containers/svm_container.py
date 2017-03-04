@@ -9,7 +9,9 @@
 ###############################################################################
 
 from __future__ import print_function
-from .model_container import ModelContainer
+from model_container import ModelContainer
+from data_container.data_loader import DataLoader
+from utils.gen_utils import load_pkl, save_pkl
 import numpy as np
 import os
 from os.path import join
@@ -32,15 +34,11 @@ class SVMContainer(ModelContainer):
             assert model != None, "Invalid model ID"
              
             train_status = model['meta']['train_status']
-            assert train_status != None, \
-            "This container's train status has not been activated.\
-                \nSet it to 1: untrained, 2: training, 3:trained"
 
             #block if model is being trained currently
-            if train_status != 2:
+            if train_status != "trained":
                 params = model['parameters']
                 data_path = model['data_path']
-                #TODO: implement the dependent data loader functionality
                 features, labels = DataLoader.load_user_data(data_path)
                 if 'train_test_split' in params.keys():
                     data_split = params['train_test_split']
@@ -48,12 +46,11 @@ class SVMContainer(ModelContainer):
                 
                 clf = svc()
                 clf.fit(trainset['features'], trainset['labels'])
-                #TODO: include the import for the dump_pkl method
                 #TODO: figure out generic format for path to learned weights
                 dump_pkl(clf.coeff_, PATH_TO_WEIGHTS)
                 
                 model['path_to_weights'] = PATH_TO_WEIGHTS
-                model['train_status'] = 3
+                model['train_status'] = "trained"
                 
                 models.update({'_id': model_id}, {'$set': model}, upsert: False)               
 
