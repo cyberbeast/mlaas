@@ -1,19 +1,39 @@
 from __future__ import print_function
+#from model_container import ModelContainer
 import numpy as np
 import pandas as pd
 from sklearn import datasets
 from sklearn.linear_model import LinearRegression
+from pymongo import MongoClient
 import pickle
 import os
+import json
 class linear_regression:
     model=0
-    def __init__(self,name,fit_intercept=True,normalize=False,copy_X=True,n_jobs=1):
-        self.name=name
-        #Following parameters will be changed later
-        self.intercept=fit_intercept
-        self.normalize=normalize
-        self.copy_x=copy_X
-        self.n_jobs=n_jobs
+    name_of_file=""
+    def train(self,model_id):
+        #client = MongoClient()
+        #db=client.mydb.mlaas
+        #cursor = db.find_one()
+        cursor={u'name': 'linearregression',u'type': 'NULL', u'_id': '58ba6c0dd84f08e2306fdb01', u'parameters':[{u'alpha':'0.01'}],u'train_status': 'untrained',u'deploy_status': 'undefined'}
+        self.name_of_file=cursor['name']
+        alpha=cursor['parameters'][0]['alpha']
+        train_status=cursor['train_status']
+        deploy_status=cursor['deploy_status']
+        #if train_status != "trained":
+            #data_path = cursor['data_path'] #No datapath in schema
+            #features, labels = DataLoader.load_user_data(data_path)
+        self.model=LinearRegression()
+        self.model.fit([[0, 0], [1, 1], [2, 2]],[0,1,2])
+        self.save()
+        train_status="trained"
+        print(train_status)
+
+    def evaluate(self,model_id):
+        client = MongoClient()
+        db=client.mydb.mlaas
+        cursor = db.find_one({'_id': model_id})
+        print(cursor)
 
     def fetch(self):
         pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
@@ -54,18 +74,23 @@ class linear_regression:
         self.model = pickle.load(pkl_file)
         self.model.fit(x,y)
     
-    def predict(self,x_pred):
+    def predict(self,x_pred,model_id):
+        #client = MongoClient()
+        #db=client.mydb
+        #cursor = db.find_one({'_id': model_id})
+        #print(cursor)
         y=self.model.predict(x_pred)
         return y
+
     
     def save(self):
-        name1=self.name
+        name1=self.name_of_file
         pickle_name=str(name1)+'.pkl'
         pickle_obj = open(pickle_name, 'wb')
         pickle.dump(self.model, pickle_obj)
         print("Pickle file created with name: "+pickle_name)
+        return
     
-
     def delete(self):
         os.remove(os.path.join(os.getcwd(),str(self.name)+'.pkl'))
         print("File deleted")
@@ -77,7 +102,12 @@ class linear_regression:
 if __name__=="__main__":
     x=[[0, 0], [1, 1], [2, 2]]
     y=[0,1,2]
+    first_try=linear_regression()
+    first_try.train("insert_model_id")
+    y=first_try.predict([[3,3],[4,4],[2,2]],"insert_model_id")
+    print(y)
 
+'''
     #Linear Regression
     first_try=linear_regression("first_model",fit_intercept=True, normalize=False, copy_X=True, n_jobs=1)
     first_try.create()
@@ -105,3 +135,4 @@ if __name__=="__main__":
     #Validation accuracy
     print(first_try.accuracy(val_x,val_y))
 
+'''

@@ -40,11 +40,16 @@ router.get('/initStatus', (req, res) => {
 
 // GET route for retrieving all user models
 router.get('/user_models', (req, res) => {
+   console.log('REQ: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
   mlmodel.find({}, function(err, mlmodels) {
     if (err) throw err;
 
     // Object of all models
-    console.log(mlmodels);
+    if (mlmodels.length == 0){
+      mlmodels = "EMPTY";
+    }
+    console.log('\t ----→ ' + mlmodels);
+    res.send(mlmodels);
   });
 });
 
