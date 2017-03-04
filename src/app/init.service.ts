@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class InitService {
-  private initUrl = urlsObject.apiUrl + urlsObject.apiUrl_initStatus;
+  private initUrl = urlsObject.apiUrl + urlsObject.api_initStatus;
   
   // Observable boolean sources
   public triggerColdStartSource: Subject<boolean> = new BehaviorSubject<boolean>(null);

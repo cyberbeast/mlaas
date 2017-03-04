@@ -5,7 +5,7 @@ import { urlsObject } from '../../config/urls';
 
 @Injectable()
 export class ModelService {
-  private addModelUrl = urlsObject.apiUrl_addNewModel;
+  private addModelUrl = urlsObject.api_addNewModel;
 
   getModels(): Promise<ModelClass[]> {
     return Promise.resolve(DEMO_MODELS);
