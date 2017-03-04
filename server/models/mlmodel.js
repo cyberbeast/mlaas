@@ -34,6 +34,10 @@ var mlmodelSchema = new Schema({
     mean_squared_error: Number,
     mean_absolute_error: Number
   },
+  data_path: {
+    type: String,
+    required: true
+  },
   description: String,
   created_at: Date,
   updated_at: Date
