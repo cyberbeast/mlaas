@@ -20,10 +20,56 @@
       <clr-wizard-step>Parameters</clr-wizard-step>
       <clr-wizard-step>Data</clr-wizard-step>
       <clr-wizard-step>Review</clr-wizard-step>
-      <clr-wizard-page>Metadata controls go here...</clr-wizard-page>
-      <clr-wizard-page>Parameters controls go here...</clr-wizard-page>
-      <clr-wizard-page>Data controls go here...</clr-wizard-page>
+      <clr-wizard-page>
+        <form>
+          <section class="form-block">
+            <label>Think of a nice name and description for your model.</label>
+            <div class="form-group">
+              <label class="required">Name</label>
+              <label for="validInput1" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-sm">
+                <input type="text" id="validInput1">
+                <span class="tooltip-content">
+                    This field cannot be empty!
+                </span>
+            </label>
+            </div>
+            <div class="form-group">
+              <label for="formFields_8">Description</label>
+              <textarea id="formFields_8" rows="5"></textarea>
+            </div>
+          </section>
+        </form>
+
+      </clr-wizard-page>
+      <clr-wizard-page>
+        <form>
+          <section class="form-block">
+            <label>Now we need to know some parameters for this model. This lets our goblins forge the best model for you. The more specific you are about these parameters, the more closer the model will be to your expectiations.</label>
+            <div class="form-group">
+              <label class="required">Type</label>
+              <!--<label for="validInput1" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-sm">-->
+                <div class="select">
+                <select id="exampleSelect1">
+                    <option>Linear Regression</option>
+                    <option>Support Vector Machine - DOES NOT WORK</option>
+                    <option>Something Else</option>
+                </select>
+            </div>
+                <!--<span class="tooltip-content">-->
+                    <!--This field cannot be empty!-->
+                <!--</span>-->
+            <!--</label>-->
+            </div>
+            <div class="form-group">
+              <label for="parameters">Parameters</label>
+              <textarea id="parameters" rows="5"></textarea>
+            </div>
+          </section>
+        </form>
+      </clr-wizard-page>
+      <clr-wizard-page>PROOF OF CONCEPT. Data is already provisioned for on the server side.</clr-wizard-page>
       <clr-wizard-page>Review controls go here...</clr-wizard-page>
     </clr-wizard>
   </div>
 </div>
+
