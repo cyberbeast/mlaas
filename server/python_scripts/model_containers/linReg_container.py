@@ -23,9 +23,11 @@ class linear_regression:
         #if train_status != "trained":
             #data_path = cursor['data_path'] #No datapath in schema
             #features, labels = DataLoader.load_user_data(data_path)
-        self.model=LinearRegression(copy_X=[[0, 0], [1, 1], [2, 2]])
+        self.model=LinearRegression()
+        self.model.fit([[0, 0], [1, 1], [2, 2]],[0,1,2])
         self.save()
         train_status="trained"
+        print(train_status)
 
     def evaluate(self,model_id):
         client = MongoClient()
@@ -73,10 +75,10 @@ class linear_regression:
         self.model.fit(x,y)
     
     def predict(self,x_pred,model_id):
-        client = MongoClient()
-        db=client.mydb
-        cursor = db.find_one({'_id': model_id})
-        print(cursor)
+        #client = MongoClient()
+        #db=client.mydb
+        #cursor = db.find_one({'_id': model_id})
+        #print(cursor)
         y=self.model.predict(x_pred)
         return y
 
@@ -101,7 +103,9 @@ if __name__=="__main__":
     x=[[0, 0], [1, 1], [2, 2]]
     y=[0,1,2]
     first_try=linear_regression()
-    first_try.train("linearregression")
+    first_try.train("insert_model_id")
+    y=first_try.predict([[3,3],[4,4],[2,2]],"insert_model_id")
+    print(y)
 
 '''
     #Linear Regression
