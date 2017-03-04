@@ -20,56 +20,47 @@
       <clr-wizard-step>Parameters</clr-wizard-step>
       <clr-wizard-step>Data</clr-wizard-step>
       <clr-wizard-step>Review</clr-wizard-step>
-      <clr-wizard-page>
-        <form>
+      <clr-wizard-page [clrWizardPageNextDisabled]="!myForm.form.valid">
+        <form #myForm="ngForm">
           <section class="form-block">
-            <label>Think of a nice name and description for your model.</label>
+            <label>Metadata</label>
             <div class="form-group">
               <label class="required">Name</label>
-              <label for="validInput1" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-sm">
-                <input type="text" id="validInput1">
-                <span class="tooltip-content">
-                    This field cannot be empty!
-                </span>
-            </label>
+              <label for="nameInput" aria-haspopup="true" role="tooltip" [class.invalid]="name.touched && !name.valid" class="tooltip tooltip-validation tooltip-md tooltip-bottom-left">
+                        <input type="text" id="nameInput" required [(ngModel)]="temp_new_ml_model.name" name="name" #name="ngModel">
+                        <span class="tooltip-content">
+                          This field cannot be empty!
+                      </span>
+                    </label>
             </div>
             <div class="form-group">
-              <label for="formFields_8">Description</label>
-              <textarea id="formFields_8" rows="5"></textarea>
+              <label for="description_textarea">Description</label>
+              <input type="text" id="description_textarea" [(ngModel)]="temp_new_ml_model.description" name="description">
             </div>
           </section>
         </form>
-
       </clr-wizard-page>
-      <clr-wizard-page>
-        <form>
+      <clr-wizard-page [clrWizardPageNextDisabled]="!myForm2.form.valid">
+        <form #myForm2="ngForm">
           <section class="form-block">
-            <label>Now we need to know some parameters for this model. This lets our goblins forge the best model for you. The more specific you are about these parameters, the more closer the model will be to your expectiations.</label>
+            <label>Parameters</label>
             <div class="form-group">
-              <label class="required">Type</label>
-              <!--<label for="validInput1" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-sm">-->
-                <div class="select">
-                <select id="exampleSelect1">
-                    <option>Linear Regression</option>
-                    <option>Support Vector Machine - DOES NOT WORK</option>
-                    <option>Something Else</option>
-                </select>
-            </div>
-                <!--<span class="tooltip-content">-->
-                    <!--This field cannot be empty!-->
-                <!--</span>-->
-            <!--</label>-->
+              <label for="model_type">Model type</label>
+              <div class="select">
+                <select type="number" [(ngModel)]="temp_new_ml_model.type" [ngModelOptions]="{standalone: true}" (ngModelChange)="getTypeParameters()">
+      <option *ngFor="let type of modelType" [ngValue]="type.name">{{type.name}}</option>
+    </select>
+              </div>
             </div>
             <div class="form-group">
-              <label for="parameters">Parameters</label>
-              <textarea id="parameters" rows="5"></textarea>
+              <label for="alpha_input">alpha</label>
+              <input type="text" id="alpha_input" [(ngModel)]="temp_new_ml_model.parameters.alpha" name="alpha_input">
             </div>
           </section>
         </form>
       </clr-wizard-page>
-      <clr-wizard-page>PROOF OF CONCEPT. Data is already provisioned for on the server side.</clr-wizard-page>
+      <clr-wizard-page>Data controls go here...</clr-wizard-page>
       <clr-wizard-page>Review controls go here...</clr-wizard-page>
     </clr-wizard>
   </div>
 </div>
-

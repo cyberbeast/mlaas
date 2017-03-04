@@ -45,6 +45,7 @@ export class ModelsComponent implements OnInit {
   selectedModel: ModelClass;
 
   subscription: Subscription;
+  
 
   getModels(): void {
     this.modelservice.getModels().then(models_result => this.models = models_result);
@@ -59,10 +60,10 @@ export class ModelsComponent implements OnInit {
   closable: boolean = true;
 
   // Wizard methods
-   onCancel(): void {
-      alert('Are you sure you want to cancel and abandon changes?');
-      this.router.navigate(['']);
-    }
+  onCancel(): void {
+    alert('Are you sure you want to cancel and abandon changes?');
+    this.router.navigate(['']);
+  }
 
   constructor(
     private router: Router,
@@ -70,7 +71,7 @@ export class ModelsComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private initService: InitService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getModels();
@@ -84,13 +85,29 @@ export class ModelsComponent implements OnInit {
       if (status == true) {
         this.open = status;
         this.closable = false;
-      }
-      else{
+      } else {
         this.open = false;
         this.closable = true;
       }
     });
   }
+  
+  modelType:Array<Object> = [
+      {num: 0, name: "Linear Regression"},
+      {num: 1, name: "SVM"}
+  ];
 
+  getTypeParameters(){
+    console.log("Fetching related parameters...");
+  }
+
+  temp_new_ml_model = {
+    name: "",
+    description: "",
+    type: "",
+    parameters: {
+      alpha: ""
+    }
+  };
 }
 
