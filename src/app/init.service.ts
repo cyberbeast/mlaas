@@ -3,13 +3,14 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {urlsObject} from '../../config/urls';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class InitService {
-  private initUrl = 'http://localhost:3000/api/initStatus';
+  private initUrl = urlsObject.apiUrl + urlsObject.apiUrl_initStatus;
   
   // Observable boolean sources
   public triggerColdStartSource: Subject<boolean> = new BehaviorSubject<boolean>(null);

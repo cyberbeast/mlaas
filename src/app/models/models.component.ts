@@ -45,24 +45,35 @@ export class ModelsComponent implements OnInit {
   selectedModel: ModelClass;
 
   subscription: Subscription;
-  
+
 
   getModels(): void {
     this.modelservice.getModels().then(models_result => this.models = models_result);
   }
 
   gotoDetail(selectedModelIP: ModelClass): void {
-    this.router.navigate(['models', selectedModelIP._id])
+    this.router.navigate(['models', selectedModelIP._id]);
   }
 
   @ViewChild("wizard") wizard: Wizard;
   open: boolean = false; // you can open the wizard by setting this variable to true
   closable: boolean = true;
 
+  wizardCommitBool: boolean = false;
+
   // Wizard methods
   onCancel(): void {
-    alert('Are you sure you want to cancel and abandon changes?');
-    this.router.navigate(['']);
+    if (this.wizardCommitBool == false){
+      alert('Are you sure you want to cancel and abandon changes?');
+      this.router.navigate(['']);
+    }
+  }
+
+  onCommit(b: boolean): void {
+    this.wizardCommitBool = b;
+    if (this.wizardCommitBool == true){
+      console.log("SUBMITTING: " + JSON.stringify(this.temp_new_ml_model));
+    }
   }
 
   constructor(
@@ -91,13 +102,18 @@ export class ModelsComponent implements OnInit {
       }
     });
   }
-  
-  modelType:Array<Object> = [
-      {num: 0, name: "Linear Regression"},
-      {num: 1, name: "SVM"}
+
+  modelType: Array < Object > = [{
+      num: 0,
+      name: "Linear Regression"
+    },
+    // {
+    //   num: 1,
+    //   name: "SVM"
+    // }
   ];
 
-  getTypeParameters(){
+  getTypeParameters() {
     console.log("Fetching related parameters...");
   }
 
