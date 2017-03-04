@@ -19,7 +19,7 @@ def load_pkl(path, verbose=False):
         print("\nPath to data is incorrect. Raised the following exception:\
                 \n{}".format(io_e))
     except Exception as e:
-        print("\nThe following exception was raised:\n{}"format(e))
+        print("\nThe following exception was raised:\n{}".format(e))
     
     if verbose:
         print("\nData loaded successfully from {}".format(path))
