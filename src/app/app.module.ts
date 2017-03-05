@@ -17,6 +17,8 @@ import {
   ClarityModule
 } from 'clarity-angular';
 
+import {NgPipesModule} from 'ngx-pipes';
+
 import {
   AppComponent
 } from './app.component';
@@ -52,6 +54,7 @@ import {
     BrowserModule,
     FormsModule,
     HttpModule,
+    NgPipesModule,
     ClarityModule.forRoot(),
     RouterModule.forRoot([{
         path: 'dashboard',

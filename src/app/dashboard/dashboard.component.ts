@@ -17,11 +17,13 @@ import {
 import {
   Router
 } from '@angular/router';
+import {ReversePipe} from 'ngx-pipes/src/app/pipes/array/reverse';
 
 @Component({
   selector: 'app-dashboard',
   providers: [
     ModelService,
+    ReversePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -32,13 +34,19 @@ export class DashboardComponent implements OnInit {
   wizardStatus: boolean;
 
   getModels(): void {
-    this.modelservice.getModels().then(models_result => this.models = models_result);
+    this.modelservice.getModels().subscribe(
+        models_result => {
+          this.models = models_result;
+          // this.modelservice.announceMlModels(models_result);
+        }
+      );
   }
 
   getInitStatus(): void {
     this.initservice.getColdStartStatus()
       .subscribe(
         status => {
+          console.log("ON DASHBOARD: " + status);
           if (status == true) {
             this.coldStart = status;
             this.announceColdStart(status);
@@ -64,6 +72,7 @@ export class DashboardComponent implements OnInit {
     private modelservice: ModelService,
     private initservice: InitService,
     private router: Router,
+    private reversePipe: ReversePipe
   ) {}
 
   announceColdStart(status: boolean) {
