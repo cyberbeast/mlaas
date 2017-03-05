@@ -32,6 +32,7 @@ testem.log
 /typings
 *pyc*
 *swp
+server/python_scripts/data/*
 
 # e2e
 /e2e/*.js
