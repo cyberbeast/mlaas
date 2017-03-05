@@ -4,6 +4,7 @@ from utils.gen_utils import load_pkl, save_pkl
 from config.global_parameters import data_path
 from os.path import exists, join
 import pandas as pd
+import numpy as np
 import pdb
 
 class DataProcessor:
@@ -16,10 +17,13 @@ class DataProcessor:
         features = full_data.drop(labels=full_data.columns.values[-1], axis=1)
         labels=full_data.iloc[:,-1]
 
+        #TODO: replace with standard format
         pickle_name = 'test1.p'
         
-        save_pkl({"features":features,"labels":labels}, join(data_path,pickle_name))
-        print("Pickle file created with name: "+pickle_name)        
+        save_pkl({"features" : features.as_matrix(),"labels": labels.as_matrix()}, \
+                    join(data_path,pickle_name))
+        print("\nPickle file created with name: " + pickle_name)        
+
 
     '''
     def load(self):
