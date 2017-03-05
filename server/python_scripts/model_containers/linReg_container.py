@@ -8,6 +8,7 @@ from os.path import exists, join
 #from sklearn import datasets
 from sklearn.linear_model import LinearRegression
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
 
 class linRegContainer(ModelContainer):
@@ -16,18 +17,20 @@ class linRegContainer(ModelContainer):
         try:
 
             conn = MongoClient('ds119250.mlab.com', 19250)
-            db = conn.mydb1
-            db.authenticate('gautam678', 'gautam678')
+            print('\nConnection Successful')
+
+            mlaas_db = conn.mydb1
+            mlaas_db.authenticate('gautam678', 'gautam678')
             models = db.mlaas
             model_cont = models.find_one({"_id": ObjectId(model_id)})
             assert model_cont, "Invalid model ID"
             
             
-            alpha=model_cont['parameters'][0]['alpha']
+           
             train_status=model_cont['train_status']
             
             if train_status != "trained":
-                #data_path = cursor['data_path'] #No datapath in schema
+                alpha=model_cont['parameters'][0]['alpha']
                 pickle_path = join(data_path, 'test1.p')
                 features, labels = DataLoader().load_user_data(pickle_path)
 

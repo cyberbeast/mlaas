@@ -16,45 +16,47 @@ import numpy as np
 import os
 from os.path import join
 from sklearn.svm import SVC as svc
-import pymongo
+from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
+from bson.objectid import ObjectId
 
 class SVMContainer(ModelContainer):
 
     '''trains the model. Params: [], Returns: '''
     def train(self, model_id):
         try:
-            conn = pymongo.MongoClient()
+            conn = MongoClient()
             print("\nConnection Successful")
 
             #TODO:replace the placeholders (in caps) with actual values
             mlaas_db = conn.DB_NAME #connect to db
+            mlaas_db.authenticate(USERNAME, PASS)
             models = mlaas_db.COLL_NAME #load the collection
-            model = models.find_one({'_id': model_id}) #get the model corresponding to the id provided
-            assert model != None, "Invalid model ID"
+            model_cont = models.find_one({'_id': ObjectId(model_id)}) #get the model corresponding to the id provided
+            assert model_cont, "Invalid model ID"
              
-            train_status = model['meta']['train_status'] #get training status of model container
+            train_status = model_cont['train_status'] #get training status of model container
 
             #block if model is being trained currently
             if train_status != "trained":
                 params = model['parameters']
-                data_path = model['data_path']
+                pickle_path = PATH_TO_DATA
                 #IMPORTANT: data loaded/stored into pickle should be an object 
                 #containing features and labels
-                dataset = DataLoader.load_user_data(data_path)
+                features, labels = DataLoader().load_user_data(pickle_path)
                 if 'train_test_split' in params.keys():
                     data_split = params['train_test_split']
-                    trainset = DataProcessor.get_trainset(dataset, data_split)
+                    trainset = DataProcessor().get_trainset(features, labels, data_split)
                 
                 clf = svc()
-                clf.fit(trainset['features'], trainset['labels'])
+                clf.fit(features, labels)
                 #TODO: figure out generic format for path to learned weights
-                dump_pkl(clf.coeff_, PATH_TO_WEIGHTS)
+                save_pkl(clf.coef_, PATH_TO_WEIGHTS)
                 
-                model['path_to_weights'] = PATH_TO_WEIGHTS
-                model['train_status'] = "trained"
+                model_cont['path_to_weights'] = PATH_TO_WEIGHTS
+                model_cont['train_status'] = "trained"
                 
-                models.update({'_id': model_id}, {'$set': model}, upsert=False)               
+                models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)               
 
         except ConnectionFailure as conn_e:
             print("\nCould not connect to server. Raised the following exception:\n{}".format(conn_e))
