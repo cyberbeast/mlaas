@@ -4,7 +4,9 @@ export const DEMO_MODELS: ModelClass[] = [
   { _id: "OISAJFKALJS",
     name: "Water Heater",
     type: "Linear Regression",
-    parameters: "a=0.05",
+    parameters: {
+      alpha: 0.01
+    },
     train_status: "Trained",
     deploy_status: "OFFLINE",
     test_accuracy: "88%",
@@ -13,7 +15,9 @@ export const DEMO_MODELS: ModelClass[] = [
     { _id: "OISAJFKALSD",
     name: "IoT Swarm",
     type: "SVM",
-    parameters: "a=0.05",
+    parameters: {
+      alpha: 0.01
+    },
     train_status: "Trained",
     deploy_status: "OFFLINE",
     test_accuracy: "88%",
@@ -22,7 +26,9 @@ export const DEMO_MODELS: ModelClass[] = [
     { _id: "OISAJFKALFD",
     name: "Thermostat Model",
     type: "Linear Regression",
-    parameters: "a=0.05",
+    parameters: {
+      alpha: 0.01
+    },
     train_status: "Trained",
     deploy_status: "OFFLINE",
     test_accuracy: "88%",

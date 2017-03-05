@@ -26,6 +26,10 @@ export class AppComponent {
     new HeaderNavItem(2, 'logs', '/logs', false),
   ];
 
+  constructor(
+    private router: Router
+  ){}
+
   setActive(id) {
     for (let items of this.header_items) {
       items.visible = false;

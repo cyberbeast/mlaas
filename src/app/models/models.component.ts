@@ -18,6 +18,7 @@ import 'rxjs/add/operator/switchMap';
 import {
   Wizard
 } from 'clarity-angular';
+import {ReversePipe} from 'ngx-pipes/src/app/pipes/array/reverse';
 import {
   ModelClass
 } from './model-class';
@@ -33,7 +34,10 @@ import {
 
 @Component({
   selector: 'app-models',
-  providers: [ModelService],
+  providers: [
+    ModelService,
+    ReversePipe
+    ],
   templateUrl: './models.component.html',
   styleUrls: ['./models.component.css']
 })
@@ -48,12 +52,18 @@ export class ModelsComponent implements OnInit {
 
 
   getModels(): void {
-    this.modelservice.getModels().then(models_result => this.models = models_result);
+    this.modelservice.getModels().subscribe(
+        models_result => {
+          this.models = models_result;
+          console.log("THIS ONE...");
+          console.log(JSON.stringify(this.models));
+        }
+      );
   }
 
   gotoDetail(selectedModelIP: ModelClass): void {
     this.router.navigate(['models', selectedModelIP._id]);
-  }
+  } 
 
   @ViewChild("wizard") wizard: Wizard;
   open: boolean = false; // you can open the wizard by setting this variable to true
@@ -73,6 +83,8 @@ export class ModelsComponent implements OnInit {
     this.wizardCommitBool = b;
     if (this.wizardCommitBool == true){
       console.log("SUBMITTING: " + JSON.stringify(this.temp_new_ml_model));
+      this.modelservice.addNewModel(this.temp_new_ml_model).subscribe(res => console.log(res), err => console.log("ERROR") ,() => this.getModels());
+      // this.models.push(this.temp_new_ml_model);
     }
   }
 
@@ -82,6 +94,7 @@ export class ModelsComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private initService: InitService,
+    private reversePipe: ReversePipe
   ) {}
 
   ngOnInit() {
