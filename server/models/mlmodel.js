@@ -36,7 +36,7 @@ var mlmodelSchema = new Schema({
   },
   data_path: {
     type: String,
-    required: true
+    // required: true
   },
   description: String,
   created_at: Date,

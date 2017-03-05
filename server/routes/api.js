@@ -28,19 +28,19 @@ router.get('/', (req, res) => {
 
 // GET route for checking cold start condition
 router.get('/initStatus', (req, res) => {
-  console.log('REQ: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+  console.log('GET: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
   initstatus.find({}, function(err, status){
     if (err) throw err;
     console.log('\t ----→ ' + status[0].cold_start);
     
-    res.send(status[0].cold_start);
-    // res.send(false);
+    // res.send(status[0].cold_start);
+    res.send(false);
   });
 });
 
 // GET route for retrieving all user models
 router.get('/user_models', (req, res) => {
-   console.log('REQ: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+  console.log('GET: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
   mlmodel.find({}, function(err, mlmodels) {
     if (err) throw err;
 
@@ -48,33 +48,34 @@ router.get('/user_models', (req, res) => {
     if (mlmodels.length == 0){
       mlmodels = "EMPTY";
     }
-    console.log('\t ----→ ' + mlmodels);
+    console.log('\t ----→ FETCHED');
     res.send(mlmodels);
   });
 });
 
 // POST route for adding a new model
 router.post('/new_model', (req, res) => {
+  console.log('POST: \t [/new_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+
   // Extract post body here.
-  var newMLModel = mlmodel({
-    name: "new model",
-    type: "svm",
-    meta: {
-      parameters: "a=0",
-      train_status: "untrained",
-      deploy_status: "not deployed",
-      train_accuracy: "0",
-      test_accuracy: "0",
-    }
-  });
+  // console.log(JSON.stringify(req.body));
+  var newMLModel = mlmodel(req.body);
 
   // Save the new model
   newMLModel.save(function(err) {
-    if (err) throw err;
-    console.log("New ML Model added to the database");
-  });
+    if(err) {
+            console.log(err);
+            res.send({
+                message :'something went wrong'
+            });
+        } else {
+             console.log('\t ----→ Created');
+            res.send({
+                message:'Model created'
+            });
 
-  res.send('CREATED!');
+        }      
+  });
 });
 
 // POST route for updating an existing model
