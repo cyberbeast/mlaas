@@ -8,10 +8,10 @@
 ###############################################################################
 
 from __future__ import print_function
-from data_container import DataContainer
+from data_containers.data_container import DataContainer
 from utils.gen_utils import load_pkl, save_pkl
-from config import data_path
-from os.path import exists, path
+from config.global_parameters import data_path
+from os.path import exists, join
 
 class DataLoader(DataContainer):
 
@@ -26,3 +26,4 @@ class DataLoader(DataContainer):
         assert exists(data_path), "\nData directory does not exist"
         path = join(data_path, "data_samples")
         save_pkl(data, path)
+        return path

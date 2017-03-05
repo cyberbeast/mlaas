@@ -18,20 +18,20 @@ from abc import ABCMeta, abstractmethod
 class ModelContainer(metaclass=ABCMeta):
 	
 	'''train: pull the model parameters from the database, fetch relevant 
-    featuresand labels through the data processing interface, train the model 
-    and return the computed training and validation accuracy.'''
+	featuresand labels through the data processing interface, train the model 
+	and return the computed training and validation accuracy.'''
 	@abstractmethod
 	def train(self, model_id):
 		pass
 
 	'''predict: pull the model weights from the database, perform inference on 
-    the data samples provided in the api request using the trained model'''
+	the data samples provided in the api request using the trained model'''
 	@abstractmethod
 	def predict(self, model_id):
 		pass
 
-    '''evaluate: evaluate the loss and other metrics associated with the model
-    container'''
-    @abstractmethod
-    def evaluate(self, model_id):
+	'''evaluate: evaluate the loss and other metrics associated with the model
+	container'''
+	@abstractmethod
+	def evaluate(self, model_id):
 	    pass
