@@ -7,9 +7,12 @@
 # model container related jobs.
 ###############################################################################
 
+from __future__ import print_function
 import argparse
 import pymongo
-from model_container import *
+from data_containers import data_processor
+from model_containers import svm_container,linReg_container
+from bson.objectid import ObjectId
 
 '''define a dict mapping for dealing with which model container to activate 
 depending on ___ '''
@@ -21,7 +24,7 @@ def type_to_model_mapper(model_type):
     }
     
     #get the correct model container object creating function
-    model_builder = model_switcher.get(model_type, lamda: print('Invalid model type'))
+    model_builder = model_switcher.get(model_type, lambda: print('Invalid model type'))
     #build the model
     return model_builder()
 
@@ -32,13 +35,11 @@ def train_model(model_id):
     
     try:
         #create connection to server
-        conn = pymongo.MongoClient()
-        
-        #TODO: replace the placeholders (in caps) with actual values
-        mlaas_db = conn.DB_NAME #access db
-        models = mlaas_db.COLL_NAME #load the collection
-        model = models.find_one({'_id': model_id})
-
+        client = MongoClient('ds119250.mlab.com', 19250)
+        db = client['mydb1']
+        db.authenticate('gautam678', 'gautam678')
+        collection = db.mlaas
+        model = collection.find_one({"_id": ObjectId(model_id)})
         assert model, "Invalid model ID"
         model_type = model['type']
         
@@ -51,8 +52,9 @@ def train_model(model_id):
         
 ''' call relevant methods to extract data from user-uploaded file and pickle it'''
 def process_data(data_path):
-    pass       
-        
+    dataprocessor=data_processor.DataProcessor()
+    dataprocessor.process(data_path)
+
 
 if __name__ == "__main__":
     
@@ -60,7 +62,7 @@ if __name__ == "__main__":
     #TODO: figure out defaults for the different optional parameters
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', help='determine which task model container must perform')
-    parser.add_argument('--model_id', help='model id for querying the db'
+    parser.add_argument('--model_id', help='model id for querying the db')
     parser.add_argument('--file_path', help='path to data file uploaded by user')
 
     args = parser.parse_args()

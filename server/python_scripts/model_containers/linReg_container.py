@@ -8,14 +8,20 @@ from pymongo import MongoClient
 import pickle
 import os
 import json
+from bson.objectid import ObjectId
 class linear_regression:
     model=0
     name_of_file=""
     def train(self,model_id):
-        #client = MongoClient()
-        #db=client.mydb.mlaas
-        #cursor = db.find_one()
-        cursor={u'name': 'linearregression',u'type': 'NULL', u'_id': '58ba6c0dd84f08e2306fdb01', u'parameters':[{u'alpha':'0.01'}],u'train_status': 'untrained',u'deploy_status': 'undefined'}
+        client = MongoClient('ds119250.mlab.com', 19250)
+        db = client['mydb1']
+        db.authenticate('gautam678', 'gautam678')
+        # client.the_database.authenticate('gautam678', 'gautam678')
+        collection=db.mlaas
+        print(collection)
+        cursor = collection.find_one()
+        print(cursor)
+        #cursor={u'name': 'linearregression',u'type': 'NULL', u'_id': '58ba6c0dd84f08e2306fdb01', u'parameters':[{u'alpha':'0.01'}],u'train_status': 'untrained',u'deploy_status': 'undefined'}
         self.name_of_file=cursor['name']
         alpha=cursor['parameters'][0]['alpha']
         train_status=cursor['train_status']
@@ -104,8 +110,8 @@ if __name__=="__main__":
     y=[0,1,2]
     first_try=linear_regression()
     first_try.train("insert_model_id")
-    y=first_try.predict([[3,3],[4,4],[2,2]],"insert_model_id")
-    print(y)
+    #y=first_try.predict([[3,3],[4,4],[2,2]],"insert_model_id")
+    #print(y)
 
 '''
     #Linear Regression
