@@ -14,7 +14,7 @@ from pickle import load, dump
 def load_pkl(path):
 
     try:
-        return load(path)
+        return load(open(path, 'rb'))
 
     except (OSError, IOError) as io_e:
         print("\nPath to data is incorrect. Raised the following exception:\
@@ -26,7 +26,7 @@ def load_pkl(path):
 def save_pkl(data, path):
     
     try:
-        dump(data, path)
+        dump(data, open(path, 'wb'))
 
     except Exception as e:
         print("\nThe following exception was raised:\n{}".format(e))

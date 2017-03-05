@@ -9,9 +9,10 @@
 
 from __future__ import print_function
 import argparse
-import pymongo
+from config.global_parameters import data_path
 from data_containers import data_processor
 from model_containers import svm_container,linReg_container
+from pymongo import MongoClient
 from bson.objectid import ObjectId
 
 '''define a dict mapping for dealing with which model container to activate 
@@ -20,7 +21,7 @@ def type_to_model_mapper(model_type):
 
     model_switcher = {
         'svm': lambda: svm_container.SVMContainer(),
-        'linear': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
+        'linear_reg': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
     }
     
     #get the correct model container object creating function
@@ -39,9 +40,9 @@ def train_model(model_id):
         db = client['mydb1']
         db.authenticate('gautam678', 'gautam678')
         collection = db.mlaas
-        model = collection.find_one({"_id": ObjectId(model_id)})
-        assert model, "Invalid model ID"
-        model_type = model['type']
+        model_cont = collection.find_one({"_id": ObjectId(model_id)})
+        assert model_cont, "Invalid model ID"
+        model_type = model_cont['type']
         
         model = type_to_model_mapper(model_type)
         model.train(model_id)

@@ -10,4 +10,4 @@
 import os
 from os.path import exists, join
 
-data_path = join(os.getcwd(), "data")
+data_path = join(".", "data")

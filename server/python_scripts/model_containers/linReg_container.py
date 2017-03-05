@@ -1,39 +1,42 @@
 from __future__ import print_function
-#from model_container import ModelContainer
+from model_containers.model_container import ModelContainer
+from data_containers.data_loader import DataLoader
+from utils.gen_utils import load_pkl, save_pkl
+from config.global_parameters import data_path
 import numpy as np
-import pandas as pd
-from sklearn import datasets
+from os.path import exists, join
+#from sklearn import datasets
 from sklearn.linear_model import LinearRegression
 from pymongo import MongoClient
-import pickle
-import os
-import json
 from bson.objectid import ObjectId
-class linear_regression:
-    model=0
-    name_of_file=""
+
+class linRegContainer(ModelContainer):
+    
     def train(self,model_id):
-        client = MongoClient('ds119250.mlab.com', 19250)
-        db = client['mydb1']
+
+        conn = MongoClient('ds119250.mlab.com', 19250)
+        db = conn.mydb1
         db.authenticate('gautam678', 'gautam678')
-        # client.the_database.authenticate('gautam678', 'gautam678')
-        collection=db.mlaas
-        print(collection)
-        cursor = collection.find_one()
-        print(cursor)
-        #cursor={u'name': 'linearregression',u'type': 'NULL', u'_id': '58ba6c0dd84f08e2306fdb01', u'parameters':[{u'alpha':'0.01'}],u'train_status': 'untrained',u'deploy_status': 'undefined'}
-        self.name_of_file=cursor['name']
-        alpha=cursor['parameters'][0]['alpha']
-        train_status=cursor['train_status']
-        deploy_status=cursor['deploy_status']
-        #if train_status != "trained":
+        models = db.mlaas
+        model_cont = models.find_one({"_id": ObjectId(model_id)})
+        assert model_cont, "Invalid model ID"
+        
+        
+        alpha=model_cont['parameters'][0]['alpha']
+        train_status=model_cont['train_status']
+        
+        if train_status != "trained":
             #data_path = cursor['data_path'] #No datapath in schema
-            #features, labels = DataLoader.load_user_data(data_path)
-        self.model=LinearRegression()
-        self.model.fit([[0, 0], [1, 1], [2, 2]],[0,1,2])
-        self.save()
-        train_status="trained"
-        print(train_status)
+            pickle_path = join(data_path, 'test1.p')
+            features, labels = DataLoader().load_user_data(pickle_path)
+
+        clf = LinearRegression()
+        clf.fit(features, labels)
+        
+        save_pkl(clf.coef_, join(data_path, 'weights.p'))
+   
+        model_cont['train_status'] = "trained"
+        models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)
 
     def evaluate(self,model_id):
         client = MongoClient()
