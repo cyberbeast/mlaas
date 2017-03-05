@@ -9,8 +9,8 @@
 ###############################################################################
 
 from __future__ import print_function
-from model_container import ModelContainer
-from data_container.data_loader import DataLoader
+from model_containers.model_container import ModelContainer
+from data_containers.data_loader import DataLoader
 from utils.gen_utils import load_pkl, save_pkl
 import numpy as np
 import os
@@ -21,28 +21,30 @@ from pymongo.errors import ConnectionFailure
 
 class SVMContainer(ModelContainer):
 
-	'''trains the model. Params: [], Returns: '''
-	def train(self, model_id):
+    '''trains the model. Params: [], Returns: '''
+    def train(self, model_id):
         try:
             conn = pymongo.MongoClient()
             print("\nConnection Successful")
 
             #TODO:replace the placeholders (in caps) with actual values
-            mlaas_db = conn.DB_NAME
-            models = mlaas_db.COLL_NAME
-            model = models.find_one({'_id': model_id})
+            mlaas_db = conn.DB_NAME #connect to db
+            models = mlaas_db.COLL_NAME #load the collection
+            model = models.find_one({'_id': model_id}) #get the model corresponding to the id provided
             assert model != None, "Invalid model ID"
              
-            train_status = model['meta']['train_status']
+            train_status = model['meta']['train_status'] #get training status of model container
 
             #block if model is being trained currently
             if train_status != "trained":
                 params = model['parameters']
                 data_path = model['data_path']
-                features, labels = DataLoader.load_user_data(data_path)
+                #IMPORTANT: data loaded/stored into pickle should be an object 
+                #containing features and labels
+                dataset = DataLoader.load_user_data(data_path)
                 if 'train_test_split' in params.keys():
                     data_split = params['train_test_split']
-                    trainset = DataProcessor.get_trainset(data_split)
+                    trainset = DataProcessor.get_trainset(dataset, data_split)
                 
                 clf = svc()
                 clf.fit(trainset['features'], trainset['labels'])
@@ -52,16 +54,15 @@ class SVMContainer(ModelContainer):
                 model['path_to_weights'] = PATH_TO_WEIGHTS
                 model['train_status'] = "trained"
                 
-                models.update({'_id': model_id}, {'$set': model}, upsert: False)               
+                models.update({'_id': model_id}, {'$set': model}, upsert=False)               
 
         except ConnectionFailure as conn_e:
-            print("\nCould not connect to server.\
-                    Raised the following exception:\n{}".format(conn_e))
+            print("\nCould not connect to server. Raised the following exception:\n{}".format(conn_e))
 
-	'''makes predictions on data samples provided. Params: [], Returns: '''
-	def predict(self, model_id):
-		pass
-	
+    '''makes predictions on data samples provided. Params: [], Returns: '''
+    def predict(self, model_id):
+    	pass
+
 
     '''evaluates loss and other metrics on the trained model. Params: [],
     Returns: '''
