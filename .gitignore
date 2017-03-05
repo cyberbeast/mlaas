@@ -32,7 +32,11 @@ testem.log
 /typings
 *pyc*
 *swp
-server/python_scripts/data/*
+
+#data
+data/
+*.p
+*.pkl
 
 # e2e
 /e2e/*.js
@@ -44,4 +48,4 @@ Thumbs.db
 
 #Folders
 user_data/*
-config/*
+config/
