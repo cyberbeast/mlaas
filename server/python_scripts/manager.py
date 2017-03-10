@@ -21,7 +21,7 @@ def type_to_model_mapper(model_type):
 
     model_switcher = {
         'svm': lambda: svm_container.SVMContainer(),
-        'linear_reg': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
+        'linear_reg': lambda: linReg_container.linRegContainer()
     }
     
     #get the correct model container object creating function
@@ -54,7 +54,7 @@ def train_model(model_id):
 ''' call relevant methods to extract data from user-uploaded file and pickle it'''
 def process_data(data_path):
     dataprocessor=data_processor.DataProcessor()
-    dataprocessor.process(data_path)
+    dataprocessor.process_user_data(data_path)
 
 
 if __name__ == "__main__":

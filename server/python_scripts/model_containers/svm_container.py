@@ -13,6 +13,7 @@ from __future__ import print_function
 #framework specific dependencies
 from model_containers.model_container import ModelContainer
 from data_containers.data_loader import DataLoader
+from data_containers.data_processor import DataProcessor
 from utils.gen_utils import load_pkl, save_pkl
 from config.global_parameters import (data_path, HOST_NAME, PORT, DB_NAME,
                                         COLL_NAME, USERNAME, PASS)
@@ -25,8 +26,8 @@ from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
 
 #global constants for testing: TODO - replace with standard stuff later
-PATH_TO_WEIGHTS = join(data_path, 'weights.p')
-PATH_TO_DATA = join(data_path, 'test1.p')
+WEIGHTS_FNAME = 'weights.p'
+USER_DATA_FNAME = 'data_samples.p'
 
 class SVMContainer(ModelContainer):
 
@@ -49,18 +50,23 @@ class SVMContainer(ModelContainer):
             train_status = model_cont['train_status'] 
 
             #block if model is being trained currently
-            if train_status != "trained":
+            if train_status != "training":
+                #init the data loader and data processor
+                data_loader = DataLoader()
+                data_processor = DataProcessor()
                 #params = model['parameters']
-                dataset = DataLoader().load_user_data(PATH_TO_DATA)
+
+                dataset = data_loader.load_user_data(data_path, USER_DATA_FNAME)
 
                 if 'train_test_split' in params.keys():
                     data_split = params['train_test_split']
-                    trainset = DataProcessor().get_trainset(features, labels, data_split)
+                    #TODO: implement this function
+                    trainset = data_processor.get_trainset(features, labels, data_split)
                 
                 clf = svc()
                 clf.fit(dataset['features'], dataset['labels'])
                 
-                save_pkl(clf.coef_, PATH_TO_WEIGHTS)
+                save_pkl(clf.coef_, data_path, WEIGHTS_FNAME)
                 
                 #model_cont['path_to_weights'] = PATH_TO_WEIGHTS
                 model_cont['train_status'] = "trained"

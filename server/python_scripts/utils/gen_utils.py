@@ -8,25 +8,40 @@
 ###############################################################################
 
 from __future__ import print_function
+from os.path import join
 from pickle import load, dump
 
 '''loads a pickle from a specified path'''
-def load_pkl(path):
+def load_pkl(data_dir, pkl_fname):
 
     try:
-        return load(open(path, 'rb'))
+        with open(join(data_dir, pkl_fname), 'rb') as pkl:
+            data = load(pkl)
+
+        return data
 
     except (OSError, IOError) as io_e:
         print("\nPath to data is incorrect. Raised the following exception:\
                 \n{}".format(io_e))
+
     except Exception as e:
         print("\nThe following exception was raised:\n{}".format(e))
 
 '''saves the data at the specified path'''
-def save_pkl(data, path):
+def save_pkl(data, data_dir, pkl_fname, large=False):
     
     try:
-        dump(data, open(path, 'wb'))
+        with open(join(data_dir, pkl_fname), 'wb') as pkl:
+            
+            if large:
+                #allows for writing files larger than 4MiB to disk
+                data = dump(data, pkl, protocol=4)            
+            else:
+                data = dump(data, pkl)
+
+    except (OSError, IOError) as io_e:
+        print("\nPath to data is incorrect. Raised the following exception:\
+                \n{}".format(io_e))
 
     except Exception as e:
         print("\nThe following exception was raised:\n{}".format(e))

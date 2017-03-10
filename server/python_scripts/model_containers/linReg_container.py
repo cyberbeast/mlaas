@@ -16,8 +16,8 @@ from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
 
 #global constants for testing: TODO - replace with standard stuff later
-PATH_TO_WEIGHTS = join(data_path, 'weights.p')
-PATH_TO_DATA = join(data_path, 'test1.p')
+WEIGHTS_FNAME = 'weights.p'
+USER_DATA_FNAME = 'data_samples.p'
 
 class linRegContainer(ModelContainer):
     
@@ -30,26 +30,28 @@ class linRegContainer(ModelContainer):
 
             mlaas_db = conn[DB_NAME]
             mlaas_db.authenticate(USERNAME, PASS)
-            models = db[COLL_NAME]
+            models = mlaas_db[COLL_NAME]
             model_cont = models.find_one({"_id": ObjectId(model_id)})
             assert model_cont, "Invalid model ID"
            
             train_status=model_cont['train_status']
             
-            if train_status != "trained":
+            if train_status != "training":
+                data_loader = DataLoader()
+
                 alpha = model_cont['parameters'][0]['alpha']
-                dataset = DataLoader().load_user_data(PATH_TO_DATA)
+                dataset = data_loader.load_user_data(data_path,USER_DATA_FNAME)
 
                 clf = LinearRegression(alpha)
                 clf.fit(dataset['features'], dataset['labels'])
             
-                save_pkl(clf.coef_, PATH_TO_WEIGHTS)
+                save_pkl(clf.coef_, data_path, WEIGHTS_FNAME)
     
                 model_cont['train_status'] = "trained"
                 models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)
 
         #TODO: figure out why this format of catch clause does not work            
-        except ConnectionFailure as conn_e:
+        except ConnectionFailure:
             print("\nCould not connect to server. \
                 Raised the following exception:\n{}".format(conn_e))
 
