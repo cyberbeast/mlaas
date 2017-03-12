@@ -1,0 +1,50 @@
+version: '2'
+services: 
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    hostname: api
+    command: ./run_api.sh
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    links: 
+      # - rabbit
+      - worker
+    depends_on: 
+      - worker
+# Redis
+  redis:
+    image: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+
+# RabbitMQ
+  # rabbit:
+  #   hostname: rabbit
+  #   image: rabbitmq:latest
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER = admin
+  #     - RABBITMQ_DEFAULT_PASS = mypass
+  #   ports:
+  #     - "5672:5672"  # we forward this port because it's useful for debugging
+  #     - "15672:15672"  # here, we can access rabbitmq management plugin
+
+   # Celery worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile-celery
+    volumes:
+      - .:/app
+    links:
+      # - rabbit
+      - redis
+    depends_on:
+      # - rabbit
+      - redis
+    command: ./run_celery.sh
+

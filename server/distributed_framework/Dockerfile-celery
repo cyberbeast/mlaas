@@ -1,0 +1,22 @@
+# Pull base image.
+FROM ubuntu:latest
+
+MAINTAINER Sandesh Gade "sandeshgade@gmail.com"
+
+# create unprivileged user
+RUN adduser --disabled-password --gecos '' myuser
+
+RUN apt-get update -y
+RUN apt-get install -y python3-pip python3-dev build-essential
+
+# Install Celery.
+RUN pip3 install celery
+RUN pip3 install celery[redis]
+
+# Define working directory.
+WORKDIR /data
+
+COPY ./api/tasks /data
+COPY run_celery.sh /data
+RUN ls
+RUN chmod +x run_celery.sh
