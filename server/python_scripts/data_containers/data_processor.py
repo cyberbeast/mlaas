@@ -1,7 +1,8 @@
 from __future__ import print_function
 from data_containers.data_loader import DataLoader
-#from utils.gen_utils import load_pkl, save_pkl
 from config.global_parameters import data_path
+
+from sklearn.model_selection import train_test_split
 from os.path import exists, join
 import pandas as pd
 import numpy as np
@@ -28,5 +29,20 @@ class DataProcessor:
                                     "labels": labels.as_matrix()})        
         
 
-    def split_data(self, data, split):
-        pass
+    def split_data(self, dataset, split, trainset_only=False):
+        
+        trainset_feats, rem_feats, 
+        trainset_labels, rem_labels = train_test_split(dataset['features'], 
+                                        dataset['labels'], train_size=split[0])
+        
+        if not trainset_only:
+        
+            test_lim = (1-split[0])*1./split[1]
+            valset_feats, testset_feats,
+            valset_labels, testset_labels = train_test_split(rem_feats, rem_labels,
+                                            test_size=test_lim)
+        
+            return trainset_feats, trainset_labels, valset_feats, valset_labels,
+                    testset_feats, testset_labels
+
+        return trainset_feats, trainset_labels
