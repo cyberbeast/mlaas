@@ -18,3 +18,4 @@ RUN chmod +x run_api.sh
 # install python dependencies
 RUN pip3 install -r requirements.txt
 
+
