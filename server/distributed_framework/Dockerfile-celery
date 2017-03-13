@@ -20,3 +20,4 @@ COPY ./api/tasks /data
 COPY run_celery.sh /data
 RUN ls
 RUN chmod +x run_celery.sh
+
