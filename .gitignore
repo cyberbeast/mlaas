@@ -50,3 +50,9 @@ Thumbs.db
 user_data/*
 config/
 server/distributed_framework/*.json
+server/distributed_framework/*.conf
+server/distributed_framework/env
+server/distributed_framework/gunicorn_config.py
+server/distributed_framework/swarm_create.py
+server/distributed_framework/swarm_create_aws.sh
+
