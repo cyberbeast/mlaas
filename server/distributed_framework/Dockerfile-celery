@@ -9,6 +9,12 @@ RUN adduser --disabled-password --gecos '' myuser
 RUN apt-get update -y
 RUN apt-get install -y python3-pip python3-dev build-essential
 
+RUN apt-get update && apt-get install -y wget
+ENV DOCKERIZE_VERSION v0.3.0
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 # Install Celery.
 RUN pip3 install celery
 RUN pip3 install celery[redis]
@@ -19,5 +25,6 @@ WORKDIR /data
 COPY ./api/tasks /data
 COPY run_celery.sh /data
 RUN ls
+RUN sleep 10
 RUN chmod +x run_celery.sh
 

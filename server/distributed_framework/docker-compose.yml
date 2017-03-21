@@ -1,11 +1,14 @@
-version: '2'
+version: "3"
+networks:
+  mynet:
 services: 
-  api:
+  web_api:
     build: 
       context: .
       dockerfile: Dockerfile
-    hostname: api
-    command: ./run_api.sh
+    hostname: web_api
+    networks: 
+      - mynet
     ports:
       - "5000:5000"
     volumes:
@@ -15,23 +18,18 @@ services:
       - worker
     depends_on: 
       - worker
+      
 # Redis
   redis:
-    image: redis
+    build: 
+      context: .
+      dockerfile: Dockerfile-redis
+    # image: redis
     hostname: redis
+    networks: 
+      - mynet
     ports:
       - "6379:6379"
-
-# RabbitMQ
-  # rabbit:
-  #   hostname: rabbit
-  #   image: rabbitmq:latest
-  #   environment:
-  #     - RABBITMQ_DEFAULT_USER = admin
-  #     - RABBITMQ_DEFAULT_PASS = mypass
-  #   ports:
-  #     - "5672:5672"  # we forward this port because it's useful for debugging
-  #     - "15672:15672"  # here, we can access rabbitmq management plugin
 
    # Celery worker
   worker:
@@ -41,10 +39,10 @@ services:
     volumes:
       - .:/app
     links:
-      # - rabbit
       - redis
     depends_on:
-      # - rabbit
       - redis
+    networks: 
+      - mynet
     command: ./run_celery.sh
 
