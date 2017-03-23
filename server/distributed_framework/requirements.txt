@@ -1,3 +1,5 @@
 gunicorn
 celery[redis]
 hug
+numpy
+scikit-learn
