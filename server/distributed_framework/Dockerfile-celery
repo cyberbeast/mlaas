@@ -24,7 +24,9 @@ WORKDIR /data
 
 COPY ./api/tasks /data
 COPY run_celery.sh /data
-RUN ls
-RUN sleep 10
+# RUN ls
+RUN pwd
+RUN pip3 install -U -r requirements.txt
+# RUN sleep 10
 RUN chmod +x run_celery.sh
 

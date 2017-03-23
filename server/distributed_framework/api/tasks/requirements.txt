@@ -1,0 +1,5 @@
+pymongo
+sklearn
+numpy
+pandas
+scipy
