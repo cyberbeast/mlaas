@@ -1,7 +1,8 @@
 var InitStatus = require('../models/initstatusmodel');
 var mongoose = require('mongoose');
+const config = require('../config.json');
 
-const mongo = mongoose.connect('mongodb://localhost');
+const mongo = mongoose.connect(config.DB_URI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
