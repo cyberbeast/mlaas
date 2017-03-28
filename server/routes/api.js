@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const mlmodel = require('../models/mlmodel');
 const initstatus = require('../models/initstatusmodel');
-
+const config = require('../config.json');
 
 // var cors = require('cors');
 
@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Connect to database
-mongoose.connect('mongodb://localhost')
+mongoose.connect(config.DB_URI);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

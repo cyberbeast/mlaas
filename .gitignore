@@ -49,6 +49,7 @@ Thumbs.db
 #Folders
 user_data/*
 config/
+server/config.json
 server/distributed_framework/*.json
 server/distributed_framework/*.conf
 server/distributed_framework/env

@@ -55,8 +55,8 @@ export class ModelsComponent implements OnInit {
     this.modelservice.getModels().subscribe(
         models_result => {
           this.models = models_result;
-          console.log("THIS ONE...");
-          console.log(JSON.stringify(this.models));
+          // console.log("THIS ONE...");
+          // console.log(JSON.stringify(this.models));
         }
       );
   }
@@ -101,7 +101,10 @@ export class ModelsComponent implements OnInit {
     this.getModels();
     this.route.params
       .switchMap((params: Params) => this.modelservice.getModel(params['id']))
-      .subscribe(model_ret => this.selectedModel = model_ret);
+      .subscribe(model_ret => {
+        this.selectedModel = model_ret;
+        console.log(JSON.stringify(this.selectedModel));
+      });
   }
 
   ngAfterViewInit() {
