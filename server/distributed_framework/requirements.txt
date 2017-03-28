@@ -1,5 +1,8 @@
-gunicorn
 celery[redis]
 hug
+uwsgi
 numpy
 scikit-learn
+pandas
+scipy
+pymongo
