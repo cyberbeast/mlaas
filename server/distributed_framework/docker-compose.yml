@@ -13,8 +13,7 @@ services:
       - "5000:5000"
     volumes:
       - .:/code
-    links: 
-      # - rabbit
+    links:
       - worker
     depends_on: 
       - worker
