@@ -10,11 +10,12 @@
     </clr-tree-node>
   </nav>
   <div class="content-area">
-    <p *ngIf="selectedModel">
-      <button type="submit" class="btn btn-link">Train</button>
-      <button type="submit" class="btn btn-link">Test</button>      
-      <span>{{selectedModel.name}}</span>
-    </p>
+    <div style="display: inline;" *ngIf="selectedModel">
+      <h1 style="margin-top: 0;">{{selectedModel.name}}
+      <button style="float: right;" type="submit" class="btn btn-link">Train</button>
+      <button style="float: right;" type="submit" class="btn btn-link">Test</button></h1>
+      <hr>
+    </div>
     <app-models-detail [model]="selectedModel"></app-models-detail>
     <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="closable" [clrWizardSize]="'lg'" (clrWizardOnCancel)="onCancel()">
       <div class="wizard-title">Add New Model</div>
