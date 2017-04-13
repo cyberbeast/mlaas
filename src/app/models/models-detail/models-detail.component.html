@@ -1,8 +1,32 @@
 <div *ngIf="model">
   <!--<h2>{{model.name}} details!</h2>-->
-  <div><label>id: </label>{{model._id}}</div>
-  <div>
-    <label>name: </label>
-    <input [(ngModel)]="model.name" placeholder="name" />
+  <div class="row">
+    <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="card-block">
+                <!-- <div class="card-title">
+                    ID:
+                </div> -->
+                <div class="card-text">
+                  <table class="table table-vertical">
+                    <tbody>
+                        <tr>
+                            <th>Model ID</th>
+                            <td>{{model._id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td><input [(ngModel)]="model.name" placeholder="name" /></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+            <!-- <div class="card-footer">
+                <button class="btn btn-sm btn-link">Footer Action 1</button>
+                <button class="btn btn-sm btn-link">Footer Action 2</button>
+            </div> -->
+        </div>
+    </div>
   </div>
 </div>

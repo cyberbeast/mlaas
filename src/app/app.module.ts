@@ -1,6 +1,7 @@
 import {
-  BrowserModule
+  BrowserModule,
 } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgModule
 } from '@angular/core';
@@ -16,6 +17,7 @@ import {
 import {
   ClarityModule
 } from 'clarity-angular';
+import {FocusModule} from 'angular2-focus';
 
 import {NgPipesModule} from 'ngx-pipes';
 
@@ -48,14 +50,16 @@ import {
     ModelsComponent,
     LogsComponent,
     DashboardComponent,
-    ModelsDetailComponent
+    ModelsDetailComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     NgPipesModule,
     ClarityModule.forRoot(),
+    FocusModule.forRoot(),
     RouterModule.forRoot([{
         path: 'dashboard',
         component: DashboardComponent
@@ -86,4 +90,3 @@ import {
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-

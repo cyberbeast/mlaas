@@ -63,13 +63,17 @@ export class ModelsComponent implements OnInit {
 
   gotoDetail(selectedModelIP: ModelClass): void {
     this.router.navigate(['models', selectedModelIP._id]);
-  } 
+  }
 
   @ViewChild("wizard") wizard: Wizard;
   open: boolean = false; // you can open the wizard by setting this variable to true
   closable: boolean = true;
+  edit_mode: boolean = false;
+  focusBool: boolean = true;
 
   wizardCommitBool: boolean = false;
+
+  progressBool: boolean = false;
 
   // Wizard methods
   onCancel(): void {
@@ -142,4 +146,3 @@ export class ModelsComponent implements OnInit {
     }
   };
 }
-
