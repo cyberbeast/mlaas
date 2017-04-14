@@ -17,9 +17,13 @@ import {
 import {
   ClarityModule
 } from 'clarity-angular';
+
 import {FocusModule} from 'angular2-focus';
 
 import {NgPipesModule} from 'ngx-pipes';
+
+import { ApolloClient } from 'apollo-client';
+import { ApolloModule } from 'apollo-angular';
 
 import {
   AppComponent
@@ -44,6 +48,13 @@ import {
   ModelService
 } from './model-service.service';
 
+// Create the client as outlined above
+const client = new ApolloClient();
+
+export function provideClient(): ApolloClient {
+  return client;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +66,7 @@ import {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ApolloModule.forRoot(provideClient),
     FormsModule,
     HttpModule,
     NgPipesModule,
