@@ -10,11 +10,26 @@
     </clr-tree-node>
   </nav>
   <div class="content-area">
-    <p *ngIf="selectedModel">
-      <button type="submit" class="btn btn-link">Train</button>
-      <button type="submit" class="btn btn-link">Test</button>      
-      <span>{{selectedModel.name}}</span>
-    </p>
+    <div style="display: inline;" *ngIf="selectedModel">
+      <h1 style="margin-top: 0;">
+        <span *ngIf="!edit_mode" (click)="this.edit_mode=true;">{{selectedModel.name}}</span>
+        <input [focus]="focusBool" style="background-color: inherit; border-style: none;" *ngIf="edit_mode" [(ngModel)]="selectedModel.name" placeholder="name" (focusout)="this.edit_mode=false;"/>
+        <button style="float: right;" type="submit" class="btn btn-link">Train</button>
+        <button style="float: right;" type="submit" class="btn btn-link">Test</button>
+        <button style="float: right;" type="submit" class="btn btn-link">Expose</button>
+      </h1>
+      <div *ngIf="progressBool; then progressBlock else noProgressBlock "></div>
+      <ng-template #progressBlock>
+        <div class="progress-group" style="font-size: 1px">
+          <div class="progress loop"><progress></progress></div>
+        </div>
+      </ng-template>
+
+      <ng-template #noProgressBlock>
+        <hr>
+      </ng-template>
+    </div>
+
     <app-models-detail [model]="selectedModel"></app-models-detail>
     <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="closable" [clrWizardSize]="'lg'" (clrWizardOnCancel)="onCancel()">
       <div class="wizard-title">Add New Model</div>
