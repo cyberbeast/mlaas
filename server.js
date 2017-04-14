@@ -1,7 +1,11 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+
+import bodyParser from 'body-parser';
+import { graphqlExpress } from 'graphql-server-express';
+import Schema from './server/graphql/schema/schema';
 
 //API routes
 const api = require('./server/routes/api');
@@ -26,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 //Setting API routes
 // app.options('*', cors()); // include before other routes
 app.use('/api', api);
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
 
 //Catch all other routes and return index
 app.get('*', (req, res) => {

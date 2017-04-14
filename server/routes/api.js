@@ -1,15 +1,29 @@
 const express = require('express');
+import bodyParser from 'body-parser';
+import {
+  graphqlExpress,
+  graphiqlExpress
+} from 'graphql-server-express';
+import Schema from '../graphql/schema/schema';
 const mongoose = require('mongoose');
-const mlmodel = require('../models/mlmodel');
-const initstatus = require('../models/initstatusmodel');
+const mlmodel = require('../graphql/models/mlmodel');
+const initstatus = require('../graphql/models/initstatusmodel');
 const config = require('../config.json');
 
 // var cors = require('cors');
 
 const router = express.Router();
 
+router.use('/graphql', bodyParser.json(), graphqlExpress({
+  schema: Schema
+}));
+
+router.use('/graphiql', graphiqlExpress({
+  endpointURL: '/graphql',
+}));
+
 // FOR DEVELOPMENT PURPOSES ONLY! COMMENT FOR PRODUCTION!
-router.use(function(req, res, next) {  
+router.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -32,7 +46,7 @@ router.get('/initStatus', (req, res) => {
   initstatus.find({}, function(err, status){
     if (err) throw err;
     console.log('\t ----→ ' + status[0].cold_start);
-    
+
     // res.send(status[0].cold_start);
     res.send(false);
   });
@@ -74,7 +88,7 @@ router.post('/new_model', (req, res) => {
                 message:'Model created'
             });
 
-        }      
+        }
   });
 });
 
