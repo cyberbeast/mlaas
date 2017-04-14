@@ -7,7 +7,7 @@
       </div>
         <div class="card-block">
             <div class="card-text">
-              <table class="table table-vertical">
+              <table style="margin-top:0" class="table table-vertical">
                 <tbody>
                     <tr>
                         <th>Model ID</th>
@@ -43,14 +43,16 @@
         Model Parameters
       </div>
       <div class="card-block">
-        <table class="table table-vertical">
-          <tbody>
-            <tr *ngFor="let k_v of model.parameters | pairs">
-              <th>{{k_v[0]}}</th>
-              <td>{{k_v[1]}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <form>
+          <div *ngFor="let k_v of model.parameters | pairs; let in = index" class="row">
+            <div class="col-xs-4">
+                <label style="display: block; text-align: center;" for="key">{{k_v[0]}}</label>
+            </div>
+            <div class="col-xs">
+                <input type="text" name="abc-{{in}}" id="key" [(ngModel)]="k_v[1]"/>
+            </div>
+          </div>
+        </form>
       </div>
       <!-- <div class="card-footer">
 
@@ -63,11 +65,12 @@
         <div class="card-block">
             <div class="card-text">
               Some kind of graph
-              <table class="table table-vertical">
+              <table style="margin-top:0" class="table table-vertical">
                 <tbody>
                     <tr>
                         <th>Latest Test Accuracy</th>
                         <td>{{model.test_accuracy}}</td>
+                        <td> something else </td>
                     </tr>
 
                 </tbody>
