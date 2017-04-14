@@ -4,14 +4,25 @@ import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {urlsObject} from '../../config/urls';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
+const CurrentUserForProfile = gql`
+  query CurrentUserForProfile {
+    currentUser {
+      login
+      avatar_url
+    }
+  }
+`;
+
 @Injectable()
 export class InitService {
   private initUrl = urlsObject.apiUrl + urlsObject.api_initStatus;
-  
+
   // Observable boolean sources
   public triggerColdStartSource: Subject<boolean> = new BehaviorSubject<boolean>(null);
 
