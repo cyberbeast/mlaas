@@ -41,16 +41,16 @@ router.get('/', (req, res) => {
 });
 
 // GET route for checking cold start condition
-router.get('/initStatus', (req, res) => {
-  console.log('GET: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
-  initstatus.find({}, function(err, status){
-    if (err) throw err;
-    console.log('\t ----→ ' + status[0].cold_start);
-
-    // res.send(status[0].cold_start);
-    res.send(false);
-  });
-});
+// router.get('/initStatus', (req, res) => {
+//   console.log('GET: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+//   initstatus.find({}, function(err, status){
+//     if (err) throw err;
+//     console.log('\t ----→ ' + status[0].cold_start);
+//
+//     // res.send(status[0].cold_start);
+//     res.send(false);
+//   });
+// });
 
 // GET route for retrieving all user models
 router.get('/user_models', (req, res) => {

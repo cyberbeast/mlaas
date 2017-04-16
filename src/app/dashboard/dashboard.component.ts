@@ -18,6 +18,19 @@ import {
   Router
 } from '@angular/router';
 import {ReversePipe} from 'ngx-pipes/src/app/pipes/array/reverse';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+const initStatusQuery = gql`
+  query initStatusQuery {
+    getInitStatus {
+      cold_start
+    }
+  }
+`;
+
+interface initStatusQueryResponse {
+  cold_start
+};
 
 @Component({
   selector: 'app-dashboard',
@@ -72,7 +85,8 @@ export class DashboardComponent implements OnInit {
     private modelservice: ModelService,
     private initservice: InitService,
     private router: Router,
-    private reversePipe: ReversePipe
+    private reversePipe: ReversePipe,
+    private apollo: Apollo
   ) {}
 
   announceColdStart(status: boolean) {
@@ -80,9 +94,17 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getInitStatus();
+    this.apollo.watchQuery<initStatusQueryResponse>({
+      query: initStatusQuery
+    }).subscribe(({data}) => {
+      this.coldStart = data["getInitStatus"].cold_start;
+      console.log(JSON.stringify(data));
+      console.log("GOT IT" + data["getInitStatus"].cold_start);
+      // return data.cold_start
+    })
+
+    // this.getInitStatus();
     this.getModels();
   }
 
 }
-
