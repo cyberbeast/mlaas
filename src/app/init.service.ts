@@ -10,14 +10,17 @@ import gql from 'graphql-tag';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
-const CurrentUserForProfile = gql`
-  query CurrentUserForProfile {
-    currentUser {
-      login
-      avatar_url
+const initStatusQuery = gql`
+  query initStatusQuery {
+    getInitStatus {
+      cold_start
     }
   }
 `;
+
+interface initStatusQueryResponse {
+  cold_start
+};
 
 @Injectable()
 export class InitService {
@@ -32,9 +35,16 @@ export class InitService {
   }
 
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private apollo: Apollo) { }
 
   getColdStartStatus(): Observable<boolean> {
+
+    // this.apollo.watchQuery<initStatusQueryResponse>({
+    //   query: initStatusQuery
+    // }).subscribe(({data}) => {
+    //   console.log("INIT: " + data);
+    // }).then(console.log("f"));
+
     return this.http.get(this.initUrl)
                     .map((res:Response) => res.json());
   }

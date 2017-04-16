@@ -14,6 +14,7 @@ import {
 import {
   RouterModule
 } from '@angular/router';
+
 import {
   ClarityModule
 } from 'clarity-angular';
@@ -22,7 +23,7 @@ import {FocusModule} from 'angular2-focus';
 
 import {NgPipesModule} from 'ngx-pipes';
 
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import { ApolloModule } from 'apollo-angular';
 
 import {
@@ -48,8 +49,15 @@ import {
   ModelService
 } from './model-service.service';
 
-// Create the client as outlined above
-const client = new ApolloClient();
+// by default, this client will send queries to `/graphql` (relative to the URL of your app)
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface({
+    uri: 'http://localhost:3000/api/graphql',
+    opts: {
+      credentials: 'same-origin',
+    },
+  }),
+});
 
 export function provideClient(): ApolloClient {
   return client;
