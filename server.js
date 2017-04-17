@@ -1,14 +1,10 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
-import cors from 'cors';
 // const bodyParser = require('body-parser');
 
 import bodyParser from 'body-parser';
-import {
-  graphqlExpress,
-  graphiqlExpress
-} from 'graphql-server-express';
+import { graphqlExpress } from 'graphql-server-express';
 import Schema from './server/graphql/schema/schema';
 
 //API routes
@@ -16,12 +12,12 @@ const api = require('./server/routes/api');
 
 const app = express();
 
-// Enable cors support for cross origin api requests (ONLY FOR DEV)
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// // Enable cors support for cross origin api requests (ONLY FOR DEV)
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 
 //Parsers for POST data
@@ -32,8 +28,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 //Setting API routes
-app.options('*', cors()); // include before other routes
+// app.options('*', cors()); // include before other routes
 app.use('/api', api);
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
 
 //Catch all other routes and return index
 app.get('*', (req, res) => {
