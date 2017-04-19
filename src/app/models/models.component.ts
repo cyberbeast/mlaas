@@ -15,6 +15,7 @@ import {
   Location
 } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
+import { Subject } from 'rxjs/Subject';
 import {
   Wizard
 } from 'clarity-angular';
@@ -32,6 +33,14 @@ import {
   InitService
 } from '../init.service';
 
+import { Apollo } from 'apollo-angular';
+import {
+  userModelsQuery,
+  userModelByIdQuery,
+  createNewModelMutation,
+  userModelsQueryResponse
+} from '../queries/userModels';
+
 @Component({
   selector: 'app-models',
   providers: [
@@ -45,6 +54,8 @@ export class ModelsComponent implements OnInit {
   @Input()
   showWizard_status: boolean;
 
+  query_modelId: Subject<string> = new Subject<string>();
+
   models: ModelClass[];
   selectedModel: ModelClass;
 
@@ -52,13 +63,20 @@ export class ModelsComponent implements OnInit {
 
 
   getModels(): void {
-    this.modelservice.getModels().subscribe(
-        models_result => {
-          this.models = models_result;
-          // console.log("THIS ONE...");
-          // console.log(JSON.stringify(this.models));
-        }
-      );
+    // this.modelservice.getModels().subscribe(
+    //     models_result => {
+    //       this.models = models_result;
+    //       // console.log("THIS ONE...");
+    //       // console.log(JSON.stringify(this.models));
+    //     }
+    //   );
+    this.apollo.watchQuery<userModelsQueryResponse>({
+      query: userModelsQuery
+    }).subscribe(({data}) => {
+      this.models = data["getUserModels"];
+    });
+
+    // return "done".toPromise();
   }
 
   gotoDetail(selectedModelIP: ModelClass): void {
@@ -87,7 +105,16 @@ export class ModelsComponent implements OnInit {
     this.wizardCommitBool = b;
     if (this.wizardCommitBool == true){
       console.log("SUBMITTING: " + JSON.stringify(this.temp_new_ml_model));
-      this.modelservice.addNewModel(this.temp_new_ml_model).subscribe(res => console.log(res), err => console.log("ERROR") ,() => this.getModels());
+      this.apollo.mutate({
+        mutation: createNewModelMutation,
+        variables: {
+          model: this.temp_new_ml_model
+        }
+      }).subscribe(({data}) => {
+        console.log('Mutation Response: ' + JSON.stringify(data);
+        this.getModels();
+      });
+      // this.modelservice.addNewModel(this.temp_new_ml_model).subscribe(res => console.log(res), err => console.log("ERROR") ,() => this.getModels());
       // this.models.push(this.temp_new_ml_model);
     }
   }
@@ -98,17 +125,31 @@ export class ModelsComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private initService: InitService,
-    private reversePipe: ReversePipe
+    private reversePipe: ReversePipe,
+    private apollo: Apollo
   ) {}
 
   ngOnInit() {
     this.getModels();
-    this.route.params
-      .switchMap((params: Params) => this.modelservice.getModel(params['id']))
-      .subscribe(model_ret => {
-        this.selectedModel = model_ret;
-        console.log(JSON.stringify(this.selectedModel));
-      });
+    this.apollo.watchQuery<userModelsQueryResponse>({
+      query: userModelByIdQuery,
+      variables: {
+        modelid: this.query_modelId
+      }
+    }).subscribe(({data}) => {
+      this.selectedModel = data["getUserModelById"];
+    });;
+    this.route.params.subscribe(params => {
+      console.log("Requesting model info for: " + params["id"]);
+      this.query_modelId.next(params["id"]);
+      // this.selectedModel = this.getModels().then(() => { this.models.find(model => model._id === params['id']);})
+    });
+      // .switchMap((params: Params) => this.models.find(model => model._id === params['id']))
+      // modelservice.getModel(params['id']))
+      // .subscribe(model_ret => {
+        // this.selectedModel = model_ret;
+        // console.log(JSON.stringify(this.selectedModel));
+      // });
   }
 
   ngAfterViewInit() {

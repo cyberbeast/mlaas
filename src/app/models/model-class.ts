@@ -1,4 +1,4 @@
-export class ModelClass {
+export interface ModelClass {
     _id: string;
     name: string;
     type: string;

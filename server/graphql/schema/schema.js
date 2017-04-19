@@ -8,14 +8,18 @@ import ModelMetrics from './modelmetrics';
 
 const RootQuery = `
   type RootQuery {
-    getInitStatus: initStatus
-    getUserModels: [mlModel]
+    hi: String
+  }
+
+  type Mutation {
+    hi(name: String!): String
   }
 `;
 
 const SchemaDefinition = `
   schema {
     query: RootQuery
+    mutation: Mutation
   }
 `;
 

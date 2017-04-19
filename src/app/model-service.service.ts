@@ -40,7 +40,7 @@ export class ModelService {
 
   addNewModel(body: Object): Observable<string> {
     // newModel['_id'] = "";
-    let bodyString = JSON.stringify(body); // Stringify payload 
+    let bodyString = JSON.stringify(body); // Stringify payload
     let headers    = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
     let options    = new RequestOptions({ headers: headers });
 
