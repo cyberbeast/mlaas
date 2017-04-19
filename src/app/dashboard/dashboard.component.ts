@@ -19,18 +19,16 @@ import {
 } from '@angular/router';
 import {ReversePipe} from 'ngx-pipes/src/app/pipes/array/reverse';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-const initStatusQuery = gql`
-  query initStatusQuery {
-    getInitStatus {
-      cold_start
-    }
-  }
-`;
+import {
+  initStatusQuery,
+  initStatusQueryResponse
+} from '../queries/initStatus';
 
-interface initStatusQueryResponse {
-  cold_start
-};
+import {
+  userModelsQuery,
+  userModelsQueryResponse
+} from '../queries/userModels';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -41,35 +39,11 @@ interface initStatusQueryResponse {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
   models: ModelClass[];
   coldStart: boolean;
   wizardStatus: boolean;
-
-  getModels(): void {
-    this.modelservice.getModels().subscribe(
-        models_result => {
-          this.models = models_result;
-          // this.modelservice.announceMlModels(models_result);
-        }
-      );
-  }
-
-  getInitStatus(): void {
-    this.initservice.getColdStartStatus()
-      .subscribe(
-        status => {
-          console.log("ON DASHBOARD: " + status);
-          if (status == true) {
-            this.coldStart = status;
-            this.announceColdStart(status);
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
-  }
 
   proceed(): void {
     this.showFirstRunWizard(this.coldStart);
@@ -98,13 +72,16 @@ export class DashboardComponent implements OnInit {
       query: initStatusQuery
     }).subscribe(({data}) => {
       this.coldStart = data["getInitStatus"].cold_start;
-      console.log(JSON.stringify(data));
-      console.log("GOT IT" + data["getInitStatus"].cold_start);
+      // console.log(JSON.stringify(data));
+      // console.log("GOT IT" + data["getInitStatus"].cold_start);
       // return data.cold_start
-    })
+    });
 
-    // this.getInitStatus();
-    this.getModels();
+    this.apollo.watchQuery<userModelsQueryResponse>({
+      query: userModelsQuery
+    }).subscribe(({data}) => {
+      this.models = data["getUserModels"];
+    });
   }
 
 }
