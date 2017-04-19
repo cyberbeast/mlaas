@@ -3,7 +3,7 @@
     <clr-tree-node style="text-align: center;">
       <button (click)="wizard.open()" class="btn btn-primary">NEW MODEL</button>
     </clr-tree-node>
-    <clr-tree-node *ngFor="let model of models | reverse ">
+    <clr-tree-node *ngFor="let model of models">
       <button (click)="gotoDetail(model)" class="clr-treenode-link" [class.active]="model.active">
           {{model.name}}
         </button>
