@@ -53,44 +53,44 @@ router.get('/', (req, res) => {
 // });
 
 // GET route for retrieving all user models
-router.get('/user_models', (req, res) => {
-  console.log('GET: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
-  mlmodel.find({}, function(err, mlmodels) {
-    if (err) throw err;
-
-    // Object of all models
-    if (mlmodels.length == 0){
-      mlmodels = "EMPTY";
-    }
-    console.log('\t ----→ FETCHED');
-    res.send(mlmodels);
-  });
-});
+// router.get('/user_models', (req, res) => {
+//   console.log('GET: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+//   mlmodel.find({}, function(err, mlmodels) {
+//     if (err) throw err;
+//
+//     // Object of all models
+//     if (mlmodels.length == 0){
+//       mlmodels = "EMPTY";
+//     }
+//     console.log('\t ----→ FETCHED');
+//     res.send(mlmodels);
+//   });
+// });
 
 // POST route for adding a new model
-router.post('/new_model', (req, res) => {
-  console.log('POST: \t [/new_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
-
-  // Extract post body here.
-  // console.log(JSON.stringify(req.body));
-  var newMLModel = mlmodel(req.body);
-
-  // Save the new model
-  newMLModel.save(function(err) {
-    if(err) {
-            console.log(err);
-            res.send({
-                message :'something went wrong'
-            });
-        } else {
-             console.log('\t ----→ Created');
-            res.send({
-                message:'Model created'
-            });
-
-        }
-  });
-});
+// router.post('/new_model', (req, res) => {
+//   console.log('POST: \t [/new_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+//
+//   // Extract post body here.
+//   // console.log(JSON.stringify(req.body));
+//   var newMLModel = mlmodel(req.body);
+//
+//   // Save the new model
+//   newMLModel.save(function(err) {
+//     if(err) {
+//             console.log(err);
+//             res.send({
+//                 message :'something went wrong'
+//             });
+//         } else {
+//              console.log('\t ----→ Created');
+//             res.send({
+//                 message:'Model created'
+//             });
+//
+//         }
+//   });
+// });
 
 // POST route for updating an existing model
 router.post('/update_model', (req, res) => {
