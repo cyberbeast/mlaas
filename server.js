@@ -5,7 +5,11 @@ const http = require('http');
 
 import bodyParser from 'body-parser';
 import { graphqlExpress } from 'graphql-server-express';
+import { SubscriptionManager } from 'graphql-subscriptions';
 import Schema from './server/graphql/schema/schema';
+import { PubSub } from 'graphql-subscriptions';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+
 
 //API routes
 const api = require('./server/routes/api');
@@ -33,6 +37,19 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // app.options('*', cors()); // include before other routes
 app.use('/api', api);
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: Schema }));
+export const pubsub = new PubSub();
+
+const subscriptionManager = new SubscriptionManager({
+  schema: Schema,
+  pubsub: pubsub,
+  setupFunctions: {
+    hi_s:(options, args) => ({
+      newHiMessageChannel: {
+        filter: comment => console.log("Server responding to the setupfunction")
+      }
+    })
+  },
+});
 
 //Catch all other routes and return index
 app.get('*', (req, res) => {
@@ -52,5 +69,13 @@ const server = http.createServer(app);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Listen on port, on all network interfaces.
-server.listen(port, () => console.log(`Server running on localhost:${port}`));
+server.listen(port, () => {
+  console.log(`Server running on localhost:${port}`);
+  new SubscriptionServer({
+      subscriptionManager: subscriptionManager,
+    }, {
+      server: server,
+      path: '/subscriptions',
+    });
+});
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

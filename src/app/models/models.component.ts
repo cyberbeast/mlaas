@@ -111,7 +111,7 @@ export class ModelsComponent implements OnInit {
           model: this.temp_new_ml_model
         }
       }).subscribe(({data}) => {
-        console.log('Mutation Response: ' + JSON.stringify(data);
+        console.log('Mutation Response: ' + JSON.stringify(data));
         this.getModels();
       });
       // this.modelservice.addNewModel(this.temp_new_ml_model).subscribe(res => console.log(res), err => console.log("ERROR") ,() => this.getModels());
