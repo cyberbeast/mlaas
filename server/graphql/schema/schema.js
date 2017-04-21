@@ -13,6 +13,18 @@ const RootQuery = `
 
   type Mutation {
     hi(name: String!): String
+    addPost(title: String!, content: String!): Post
+  }
+
+  type Post {
+    id: Int!
+    title: String!
+    content: String!
+  }
+
+  type Subscription {
+    # Subscription fires on every comment added
+    postAdded: Post
   }
 `;
 
@@ -20,6 +32,7 @@ const SchemaDefinition = `
   schema {
     query: RootQuery
     mutation: Mutation
+    subscription: Subscription
   }
 `;
 
