@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 const mlmodel = require('../graphql/models/mlmodel');
 const initstatus = require('../graphql/models/initstatusmodel');
 const config = require('../config.json');
-
 // var cors = require('cors');
 
 const router = express.Router();
@@ -20,6 +19,7 @@ router.use('/graphql', bodyParser.json(), graphqlExpress({
 
 router.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql',
+  subscriptionsEndpoint: `ws://localhost:3000/subscriptions`,
 }));
 
 // FOR DEVELOPMENT PURPOSES ONLY! COMMENT FOR PRODUCTION!
