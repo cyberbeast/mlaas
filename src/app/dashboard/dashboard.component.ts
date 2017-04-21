@@ -2,6 +2,8 @@ import {
   Component,
   OnInit
 } from '@angular/core';
+import gql from 'graphql-tag';
+
 import {
   ModelClass
 } from '../models/model-class';
@@ -45,6 +47,9 @@ export class DashboardComponent implements OnInit {
   coldStart: boolean;
   wizardStatus: boolean;
 
+  posts: any = "Init"
+
+
   proceed(): void {
     this.showFirstRunWizard(this.coldStart);
   }
@@ -67,6 +72,20 @@ export class DashboardComponent implements OnInit {
     this.initservice.announceColdStart(status);
   }
 
+  createHiMessage() {
+    console.log("Trying");
+    this.apollo.mutate({
+      mutation: gql`
+        mutation ($title: String!, $content: String!) {
+          addPost(title: $title, content:$content) {
+            id
+          }
+        }
+      `,
+      variables: { title: "SANDESH", content: "con1111" }
+    }).toPromise();
+  }
+
   ngOnInit() {
     this.apollo.watchQuery<initStatusQueryResponse>({
       query: initStatusQuery
@@ -82,6 +101,17 @@ export class DashboardComponent implements OnInit {
     }).subscribe(({data}) => {
       this.models = data["getUserModels"];
     });
-  }
 
+    this.apollo.subscribe({
+      query: gql`
+        subscription {
+          postAdded{
+            content
+          }
+        }
+      `
+    }).subscribe((data) => {
+        this.posts = data.postAdded.content;
+    });
+  }
 }

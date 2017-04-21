@@ -10,6 +10,12 @@
         </button>
     </div>
   </clr-modal>
+
+  <button (click)="createHiMessage()">Push random</button>
+    <ul>
+      <li>{{posts}}</li>
+    </ul>
+
   <div class="row">
     <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let model of models">
       <a href="" class="card clickable">

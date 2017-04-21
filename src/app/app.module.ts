@@ -49,19 +49,21 @@ import {
   ModelService
 } from './model-service.service';
 
-// by default, this client will send queries to `/graphql` (relative to the URL of your app)
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({
-    uri: 'http://localhost:3000/api/graphql',
-    opts: {
-      credentials: 'same-origin',
-    },
-  }),
-});
+import { provideClient } from './apollo';
 
-export function provideClient(): ApolloClient {
-  return client;
-}
+// by default, this client will send queries to `/graphql` (relative to the URL of your app)
+// const client = new ApolloClient({
+//   networkInterface: createNetworkInterface({
+//     uri: 'http://localhost:3000/api/graphql',
+//     opts: {
+//       credentials: 'same-origin',
+//     },
+//   }),
+// });
+//
+// export function provideClient(): ApolloClient {
+//   return client;
+// }
 
 @NgModule({
   declarations: [
