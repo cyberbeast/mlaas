@@ -13,7 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.0.2",
-    "@angular/common": "^4.0.2",
+    "@angular/common": ">2.0.0",
     "@angular/compiler": "^4.0.2",
     "@angular/core": "^4.0.2",
     "@angular/forms": "^4.0.2",
@@ -21,6 +21,8 @@
     "@angular/platform-browser": "^4.0.2",
     "@angular/platform-browser-dynamic": "^4.0.2",
     "@angular/router": "^4.0.2",
+    "@ngrx/core": "^1.2.0",
+    "@ngrx/store": "^2.2.2",
     "@webcomponents/custom-elements": "^1.0.0-alpha.3",
     "angular2-focus": "^1.1.0",
     "apollo-angular": "^0.13.0",

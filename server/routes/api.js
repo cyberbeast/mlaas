@@ -9,9 +9,22 @@ const mongoose = require('mongoose');
 const mlmodel = require('../graphql/models/mlmodel');
 const initstatus = require('../graphql/models/initstatusmodel');
 const config = require('../config.json');
-// var cors = require('cors');
+var cors = require('cors');
+var whitelist = [
+    'http://localhost:3000',
+    'http://localhost:4200'
+];
+var corsOptions = {
+    origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
+};
+
 
 const router = express.Router();
+router.use(cors(corsOptions));
 
 router.use('/graphql', bodyParser.json(), graphqlExpress({
   schema: Schema

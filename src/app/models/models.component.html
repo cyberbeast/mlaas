@@ -3,17 +3,25 @@
     <clr-tree-node style="text-align: center;">
       <button (click)="wizard.open()" class="btn btn-primary">NEW MODEL</button>
     </clr-tree-node>
-    <clr-tree-node *ngFor="let model of models">
+    <app-models-list
+      [items]='items | async'
+      (selected)="selectItem($event)"
+    ></app-models-list>
+    <!-- <clr-tree-node style="text-align: center;">
+      <button (click)="wizard.open()" class="btn btn-primary">NEW MODEL</button>
+    </clr-tree-node>
+    <clr-tree-node *ngFor="items | async">
       <button (click)="gotoDetail(model)" class="clr-treenode-link" [class.active]="model.active">
           {{model.name}}
         </button>
-    </clr-tree-node>
+    </clr-tree-node> -->
   </nav>
   <div class="content-area">
-    <div style="display: inline;" *ngIf="selectedModel">
+    <!-- <div style="display: inline;" *ngIf="selectedModel">
       <h1 style="margin-top: 0;">
         <span *ngIf="!edit_mode" (click)="this.edit_mode=true;">{{selectedModel.name}}</span>
         <input [focus]="focusBool" style="background-color: inherit; border-style: none;" *ngIf="edit_mode" [(ngModel)]="selectedModel.name" placeholder="name" (focusout)="this.edit_mode=false;"/>
+        <button style="float: right;" (click)="deleteModel( selectedModel._id )" class="btn btn-danger-outline">Delete</button>
         <button style="float: right;" type="submit" class="btn btn-link">Train</button>
         <button style="float: right;" type="submit" class="btn btn-link">Test</button>
         <button style="float: right;" type="submit" class="btn btn-link">Expose</button>
@@ -28,9 +36,12 @@
       <ng-template #noProgressBlock>
         <hr>
       </ng-template>
-    </div>
+    </div> -->
 
-    <app-models-detail [model]="selectedModel"></app-models-detail>
+    <app-models-detail
+      [item]="selectedItem | async"
+      (deleted)="deleteItem($event)"
+    ></app-models-detail>
     <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="closable" [clrWizardSize]="'lg'" (clrWizardOnCancel)="onCancel()">
       <div class="wizard-title">Add New Model</div>
       <clr-wizard-step>Metadata</clr-wizard-step>

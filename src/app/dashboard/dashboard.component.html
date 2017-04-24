@@ -17,8 +17,8 @@
     </ul>
 
   <div class="row">
-    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let model of models">
-      <a href="" class="card clickable">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let model of items | async">
+      <a class="card clickable">
         <div class="card-header">
           {{model.name}}
         </div>
@@ -40,11 +40,14 @@
         <div class="card-footer">
           <a class="btn btn-primary">Expose</a>
           <!--<button class="btn btn-sm btn-link">Expose</button>-->
-          <a class="btn btn-sm btn-link" [routerLink]="['/models', model._id]">Edit</a>
+          <a class="btn btn-sm btn-link" (click)="selectItem(model)">Edit</a>
         </div>
       </a>
     </div>
 
 
   </div>
+
+
+  <!-- <app-models></app-models> -->
 </div>

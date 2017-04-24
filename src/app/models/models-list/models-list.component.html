@@ -1,0 +1,6 @@
+
+<clr-tree-node *ngFor="let item of items">
+  <button (click)="selected.emit(item)" class="clr-treenode-link">
+      {{item.name}}
+    </button>
+</clr-tree-node>
