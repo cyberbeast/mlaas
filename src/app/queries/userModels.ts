@@ -43,6 +43,12 @@ export var createNewModelMutation = gql`
   }
 `
 
+export var deleteModelByIdMutation = gql`
+  mutation deleteModelById($id: String!){
+    deleteModelById(id: $id)
+  }
+`
+
 interface parameters {
   alpha
 }

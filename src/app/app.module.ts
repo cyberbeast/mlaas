@@ -5,6 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgModule
 } from '@angular/core';
+
+// import {provideStore} from '@ngrx/store';
+import {StoreModule} from '@ngrx/store';
+import {MLModelService} from './common/services/mlmodels.service';
+import {mlmodels} from './common/stores/mlmodels.store';
+import {selectedModel} from './common/stores/selectedModel.store';
+
 import {
   FormsModule
 } from '@angular/forms';
@@ -48,8 +55,12 @@ import {
 import {
   ModelService
 } from './model-service.service';
+import {
+  ModelBackendService
+} from './model-backend.service';
 
 import { provideClient } from './apollo';
+import { ModelsListComponent } from './models/models-list/models-list.component';
 
 // by default, this client will send queries to `/graphql` (relative to the URL of your app)
 // const client = new ApolloClient({
@@ -72,6 +83,7 @@ import { provideClient } from './apollo';
     LogsComponent,
     DashboardComponent,
     ModelsDetailComponent,
+    ModelsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +92,7 @@ import { provideClient } from './apollo';
     FormsModule,
     HttpModule,
     NgPipesModule,
+    StoreModule.provideStore({mlmodels, selectedModel}),
     ClarityModule.forRoot(),
     FocusModule.forRoot(),
     RouterModule.forRoot([{
@@ -100,13 +113,15 @@ import { provideClient } from './apollo';
       },
       {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
     ])
   ],
   providers: [
     InitService,
+    ModelBackendService,
+    MLModelService
     // ModelService
   ],
   bootstrap: [AppComponent]
