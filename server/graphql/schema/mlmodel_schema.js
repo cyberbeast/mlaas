@@ -18,6 +18,11 @@ const mlModel = `
 
   extend type Mutation {
     createNewModel(newModel: newModel!): String
+    deleteModelById(id: String!): String
+  }
+
+  extend type Subscription {
+    getModelChanges: [mlModel]
   }
 
   input newModelParameters {

@@ -3,6 +3,8 @@ const mlmodel = require('../models/mlmodel');
 const ObjectId = require('mongoose').Types.ObjectId;
 import { pubsub } from '../../../server';
 
+var res = "unset";
+
 const resolvers = {
   RootQuery: {
     hi() {
@@ -45,27 +47,54 @@ const resolvers = {
     },
 
     createNewModel(_, args) {
-      console.log('POST: \t [/new_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+      console.log('[/new_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
       console.log(args);
       var newMlModel = mlmodel(args.newModel);
 
-      newMlModel.save(function(err) {
+      newMlModel.save(function(err, mongomodel) {
         if (err) {
           console.log(err);
-          return "error";
+          return false;
         } else {
-          console.log('\t ---→ Created');
-          return "success";
+          console.log('\t ---→ Created \n', JSON.stringify(mongomodel));
+          pubsub.publish('getModelChanges', {});
+          return true;
         }
       });
+    },
+
+    deleteModelById(_, args) {
+      console.log('[/delete_model] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+      console.log("ID:" + args.id);
+
+      mlmodel.findByIdAndRemove(args.id, function(err){
+        if (err){
+          console.log(err)
+          return false;
+        }
+        else {
+          pubsub.publish('getModelChanges', {});
+          return true;
+        }
+
+        // return this.res;
+      });
+
+      return true
     }
   },
   Subscription: {
     postAdded(post) {
   // the subscription payload is the comment.
-  return post;
-}
+      return post;
     },
+
+    getModelChanges() {
+      console.log(mlmodel.find().sort({updated_at: -1}).then((res) => res));
+      return mlmodel.find().sort({updated_at: -1}).then((res) => res);
+      // return model
+    }
+  },
 };
 
 export default resolvers

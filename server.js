@@ -16,12 +16,12 @@ const api = require('./server/routes/api');
 
 const app = express();
 
-// // Enable cors support for cross origin api requests (ONLY FOR DEV)
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+// Enable cors support for cross origin api requests (ONLY FOR DEV)
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 
 //Parsers for POST data
