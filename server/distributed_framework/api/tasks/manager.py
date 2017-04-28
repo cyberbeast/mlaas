@@ -10,10 +10,13 @@
 from __future__ import print_function
 import argparse
 from model_containers import svm_container,linReg_container
-# from config.global_parameters import data_path
+from config.global_parameters import (data_path, USER_DATA_FNAME, 
+										HOST_NAME, DB_NAME, COLL_NAME) 
 from data_containers import data_processor
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
+import pdb
 
 '''define a dict mapping for dealing with which model container to activate 
 depending on ___ '''
@@ -21,7 +24,7 @@ def type_to_model_mapper(model_type):
 
     model_switcher = {
         'svm': lambda: svm_container.SVMContainer(),
-        'linear_reg': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
+        'Linear Regression': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
     }
     
     #get the correct model container object creating function
@@ -36,14 +39,13 @@ def train_model(model_id):
     
     try:
         #create connection to server
-        client = MongoClient('ds119250.mlab.com', 19250)
-        db = client['mydb1']
-        db.authenticate('gautam678', 'gautam678')
-        collection = db.mlaas
-        model_cont = collection.find_one({"_id": ObjectId(model_id)})
+        client = MongoClient(HOST_NAME)
+        db = client[DB_NAME]
+        models = db[COLL_NAME]
+        model_cont = models.find_one({"_id": ObjectId(model_id)})
         assert model_cont, "Invalid model ID"
         model_type = model_cont['type']
-        
+
         model = type_to_model_mapper(model_type)
         model.train(model_id)
         
@@ -72,7 +74,7 @@ if __name__ == "__main__":
         assert args.model_id, 'Model ID must be specified'
         train_model(args.model_id)
 
-    elif args.task == 'process data':
+    elif args.task == 'process_data':
         assert args.file_path, "Path to data file must be specified"
         process_data(args.file_path)
     
