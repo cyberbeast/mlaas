@@ -1,7 +1,7 @@
 from __future__ import print_function
 #from data_container import DataContainer
 from utils.gen_utils import load_pkl, save_pkl
-from config.global_parameters import data_path
+from config.global_parameters import data_path, USER_DATA_FNAME
 from os.path import exists, join
 import pandas as pd
 import numpy as np
@@ -18,7 +18,7 @@ class DataProcessor:
         labels=full_data.iloc[:,-1]
 
         #TODO: replace with standard format
-        pickle_name = 'test1.p'
+        pickle_name = USER_DATA_FNAME
         
         save_pkl({"features" : features.as_matrix(),"labels": labels.as_matrix()}, \
                     join(data_path,pickle_name))
