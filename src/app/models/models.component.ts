@@ -86,10 +86,10 @@ export class ModelsComponent implements OnInit {
     private reversePipe: ReversePipe,
     private apollo: Apollo
   ) {
-    this.items = mservice.mlmodels;
-    this.selectedItem = store.select('selectedModel');
-    // this.selectedItem.subscribe(v => console.log(v));
-    mservice.loadModels();
+    // this.items = mservice.mlmodels;
+    // this.selectedItem = store.select('selectedModel');
+    // // this.selectedItem.subscribe(v => console.log(v));
+    // mservice.loadModels();
   }
 
   createItem(item: MLModel) {
@@ -177,7 +177,7 @@ export class ModelsComponent implements OnInit {
   ngOnInit() {
 
     console.log("HEREHERHEHREHRE");
-    this.mservice.loadModels();
+    // this.mservice.loadModels();
     this.items = this.mservice.mlmodels;
     this.selectedItem = this.store.select('selectedModel');
     // this.selectedItem.subscribe(v => console.log(v));

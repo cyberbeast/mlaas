@@ -11,10 +11,11 @@ export var userModelsQuery = gql`
       }
       train_status
       deploy_status
-      data_path
+      # data_path
       description
       created_at
       updated_at
+      learned_model
     }
   }
 `
@@ -29,10 +30,11 @@ export var userModelByIdQuery = gql`
       }
       train_status
       deploy_status
-      data_path
+      # data_path
       description
       created_at
       updated_at
+      learned_model
     }
   }
 `
@@ -63,4 +65,5 @@ export interface userModelsQueryResponse {
   description
   created_at
   updated_at
+  learned_model
 }

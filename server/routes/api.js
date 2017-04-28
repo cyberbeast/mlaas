@@ -8,8 +8,11 @@ import Schema from '../graphql/schema/schema';
 const mongoose = require('mongoose');
 const mlmodel = require('../graphql/models/mlmodel');
 const initstatus = require('../graphql/models/initstatusmodel');
+const ObjectId = require('mongoose').Types.ObjectId;
 const config = require('../config.json');
 var cors = require('cors');
+import { pubsub } from '../../server';
+
 var whitelist = [
     'http://localhost:3000',
     'http://localhost:4200'
@@ -109,19 +112,22 @@ router.get('/', (req, res) => {
 router.post('/update_model', (req, res) => {
     // This method expects the mlmodel's name and updates the corresponding document.
 
-    mlmodel.find({ name: 'new model' }, function(err, returned_mlmodel) {
+    console.log(JSON.stringify(req.body));
+    mlmodel.findByIdAndUpdate(req.body._id, req.body, function(err, returned_mlmodel) {
       if (err) throw err;
 
+      console.log(returned_mlmodel);
       // update fields
-      returned_mlmodel.type = "something_else";
+      // returned_mlmodel[0].learned_model = req.body.learned_model;
 
-      mlmodel.save(function(err) {
-        if (err) throw err;
-        console.log("MLModel successfully UPDATED!");
-      });
+      // returned_mlmodel[0].save(function(err) {
+      //   if (err) throw err;
+      //   pubsub.publish('getModelChanges', {});
+      //   console.log("MLModel successfully UPDATED!");
+      // });
     });
 
-  res.send("UPDATED!");
+  res.send("NEW LEARNED MODEL AVAILABLE\!");
 });
 
 // POST route for deleting an existing model
