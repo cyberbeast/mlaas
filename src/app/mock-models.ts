@@ -1,6 +1,6 @@
 import { ModelClass } from './models/model-class';
 
-export const DEMO_MODELS: ModelClass[] = [
+export const DEMO_MODELS: any[] = [
   { _id: "OISAJFKALJS",
     name: "Water Heater",
     type: "Linear Regression",

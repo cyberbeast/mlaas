@@ -19,6 +19,7 @@ const resolvers = {
 
     getUserModels() {
       console.log('GET: \t [/user_models] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+      mlmodel.find().then((res) => console.log(res));
       return mlmodel.find().sort({updated_at: -1}).then((res) => res);
     },
 
