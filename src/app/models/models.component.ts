@@ -176,6 +176,8 @@ export class ModelsComponent implements OnInit {
 
   ngOnInit() {
 
+
+
     console.log("HEREHERHEHREHRE");
     // this.mservice.loadModels();
     this.items = this.mservice.mlmodels;

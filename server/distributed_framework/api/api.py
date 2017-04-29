@@ -2,7 +2,7 @@ import hug
 from tasks.tasks import train_model
 from celery.result import AsyncResult
 import requests
-from pymongo.objectid import ObjectId
+# from pymongo.objectid import ObjectId
 
 
 @hug.get('/train', output=hug.output_format.html)

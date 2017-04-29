@@ -1,18 +1,9 @@
-###############################################################################
-# Author: Abhimanyu Banerjee
-# Project: Machine Learning as a Service
-# Date Created: 3/4/2017
-#
-# File Description: This script serves as a task manager for coordinating the
-# model container related jobs.
-###############################################################################
-
 from __future__ import print_function
 import argparse
 
 from model_containers import svm_container,linReg_container
-from config.global_parameters import (data_path, USER_DATA_FNAME, 
-										HOST_NAME, DB_NAME, COLL_NAME) 
+from config.global_parameters import (data_path, USER_DATA_FNAME,
+										HOST_NAME, DB_NAME, COLL_NAME)
 
 from data_containers import data_processor
 from pymongo import MongoClient

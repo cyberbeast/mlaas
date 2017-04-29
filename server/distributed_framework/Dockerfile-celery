@@ -20,13 +20,18 @@ RUN pip3 install celery
 RUN pip3 install celery[redis]
 
 # Define working directory.
-WORKDIR /data
+# RUN mkdir api
+# RUN cd api
 
-COPY ./api/tasks /data
-COPY run_celery.sh /data
+WORKDIR /api
+
+COPY ./api/tasks /api/tasks
+COPY run_celery.sh /api
 # RUN ls
-RUN pwd
-RUN pip3 install -U -r requirements.txt
+# RUN pwd
+RUN pip3 install -U -r /api/tasks/requirements.txt
 # RUN sleep 10
+RUN cd tasks
+RUN cd tasks
+RUN ls
 RUN chmod +x run_celery.sh
-
