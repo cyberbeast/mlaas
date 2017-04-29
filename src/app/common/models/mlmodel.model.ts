@@ -10,4 +10,5 @@ export interface MLModel {
     test_accuracy: string;
     created_at: number;
     updated_at: number;
+    learned_model: string;
 }

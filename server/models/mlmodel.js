@@ -34,8 +34,9 @@ var mlmodelSchema = new Schema({
     mean_squared_error: Number,
     mean_absolute_error: Number
   },
-  data_path: {
+  learned_model: {
     type: String,
+    default: "nothing here"
     // required: true
   },
   description: String,
@@ -72,4 +73,3 @@ var MLModel = mongoose.model('MLModel', mlmodelSchema);
 // Export the model for use in the node application
 module.exports = MLModel;
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-

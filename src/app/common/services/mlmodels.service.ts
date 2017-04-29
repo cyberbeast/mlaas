@@ -52,18 +52,25 @@ export class MLModelService {
             type
             train_status
             deploy_status
-            data_path
+            # data_path
             description
             created_at
             updated_at
+            learned_model
           }
         }
       `
     }).subscribe({
       next: (data) => {
-        console.log("NEW ngrx update");
-        const newData: MLModel = data.getModelChanges;
-        this.entryObs.updateQuery((previousResult) => pushNewModel<Object>(previousResult, newData));
+        if (data === null) { console.log("empty") }
+        else {
+          console.log("NEW ngrx update");
+          const newData: MLModel = data.getModelChanges;
+          this.entryObs.updateQuery((previousResult) =>  Object.assign({}, {
+            getUserModels: [newData, ...previousResult.getUserModels]
+          }));
+        }
+        // pushNewModel<Object>(previousResult, newData));
       },
       error(err: any): void {
         console.error('err', err);
@@ -134,6 +141,8 @@ function pushNewModel<T>(prev: any, newModel: MLModel): T {
   // if (isDuplicateModel(newModel, prev.getUserModels)) {
   //   return prev;
   // }
+  console.log("This is prev: ");
+  console.log(prev);
 
   return Object.assign({}, prev, {
     getUserModels: [newModel, ...prev.getUserModels]

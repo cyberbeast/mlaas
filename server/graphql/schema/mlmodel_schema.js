@@ -5,7 +5,7 @@ const mlModel = `
     type: String
     train_status: String
     deploy_status: String
-    data_path: String
+    learned_model: String
     description: String
     created_at: String
     updated_at: String
