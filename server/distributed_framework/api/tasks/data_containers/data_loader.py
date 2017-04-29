@@ -10,7 +10,6 @@
 from __future__ import print_function
 from data_containers.data_container import DataContainer
 from utils.gen_utils import load_pkl, save_pkl
-from config.global_parameters import data_path
 from os.path import exists, join
 import pdb
 import numpy as np
@@ -25,7 +24,7 @@ class DataLoader(DataContainer):
         return load_pkl(data_path)
 
     '''save data in user's directory. Params: [], Returns: '''
-    def save_user_data(self, data):
+    def save_user_data(self, data_path, data):
         
         #TODO: define template for path for data storage
         assert exists(data_path), "\nData directory does not exist"

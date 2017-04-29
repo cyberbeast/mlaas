@@ -9,14 +9,21 @@
 
 from __future__ import print_function
 import argparse
-from model_containers import svm_container,linReg_container
-from config.global_parameters import (data_path, USER_DATA_FNAME, 
-										HOST_NAME, DB_NAME, COLL_NAME) 
+from model_containers import linReg_container#, svm_container
 from data_containers import data_processor
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
+from os.path import join
+import json
 import pdb
+
+##Unpacking config.json
+
+config = json.load(open('config.json'))
+HOST_NAME, DB_NAME, COLL_NAME, WEIGHTS_FNAME, USER_DATA_FNAME, data_path = config["HOST_NAME"], config["DB_NAME"], \
+                                                            config["COLL_NAME"], config["WEIGHTS_FNAME"], \
+                                                            config["USER_DATA_FNAME"], config["data_path"] 
 
 '''define a dict mapping for dealing with which model container to activate 
 depending on ___ '''
@@ -46,17 +53,24 @@ def train_model(model_id):
         assert model_cont, "Invalid model ID"
         model_type = model_cont['type']
 
+        #get the correct model object
         model = type_to_model_mapper(model_type)
-        model.train(model_id)
+
+        #train the model
+        model_cont = model.train(model_cont, join(data_path, USER_DATA_FNAME))
+        
+        #persist the updated metadata
+        if model_cont:
+            models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)
         
     except ConnectionFailure as conn_e:
         print("\nCould not connect to server. \
                 Raised the following exception:\n{}".format(conn_e))
         
 ''' call relevant methods to extract data from user-uploaded file and pickle it'''
-def process_data(data_path):
+def process_data(user_data_path):
     dataprocessor=data_processor.DataProcessor()
-    dataprocessor.process(data_path)
+    dataprocessor.process(join(data_path, USER_DATA_FNAME), user_data_path)
 
 
 if __name__ == "__main__":

@@ -57,4 +57,6 @@ server/distributed_framework/gunicorn_config.py
 server/distributed_framework/swarm_create.py
 server/distributed_framework/swarm_create_aws.sh
 
+
+config*
 .babelrc
