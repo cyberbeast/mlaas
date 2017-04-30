@@ -16,15 +16,6 @@ class DataProcessor:
         labels=full_data.iloc[:,-1]
 
         save_pkl({"features" : features.as_matrix(),"labels": labels.as_matrix()}, dump_path)
-        print("\nPickle file created with name: " + pickle_name)        
+        print("\nPickle file created with name: " + pickle_name)
+        return False
 
-    '''
-    def load(self):
-        pkl_file = open(os.path.join(os.getcwd(),"test"+'.pkl'), 'rb')
-        x,y = pickle.load(pkl_file)
-        print("New model Loaded")
-        print(x)
-        print(y)
-    
-
-'''

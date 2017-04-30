@@ -1,12 +1,6 @@
 from __future__ import print_function
 import argparse
 from model_containers import linReg_container#, svm_container
-
-
-from model_containers import svm_container,linReg_container
-from config.global_parameters import (data_path, USER_DATA_FNAME,
-										HOST_NAME, DB_NAME, COLL_NAME)
-
 from data_containers import data_processor
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
@@ -58,15 +52,20 @@ def train_model(model_id):
         #persist the updated metadata
         if model_cont:
             models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)
+            return True
+        else:
+            return False
         
     except ConnectionFailure as conn_e:
         print("\nCould not connect to server. \
                 Raised the following exception:\n{}".format(conn_e))
+        return False
 
 ''' call relevant methods to extract data from user-uploaded file and pickle it'''
 def process_data(user_data_path):
     dataprocessor=data_processor.DataProcessor()
     dataprocessor.process(join(data_path, USER_DATA_FNAME), user_data_path)
+    return False
 
 
 if __name__ == "__main__":
