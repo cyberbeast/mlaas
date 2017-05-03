@@ -65,11 +65,16 @@ class SVMContainer(ModelContainer):
                 #model_cont['path_to_weights'] = PATH_TO_WEIGHTS
                 model_cont['train_status'] = "trained"
                 
-                models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)               
+                models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)  
+                return model_cont
+            else:
+                return False     
         #TODO: figure out why this form of catch clause does not work
         except ConnectionFailure as conn_e:
             print("\nCould not connect to server. \
                     Raised the following exception:\n{}".format(conn_e))
+    
+        
 
     '''makes predictions on data samples provided. Params: [], Returns: '''
     def predict(self, model_id):

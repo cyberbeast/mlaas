@@ -41,22 +41,7 @@ class linRegContainer(ModelContainer):
             return model_cont
         else:
             print("Already Trained")
-            return False
-
-    '''
-    def accuracy(self,x,y):
-        y=[float(i) for i in y]
-        pkl_file = open(os.path.join(os.getcwd(),str(self.name)+'.pkl'), 'rb')
-        self.model = pickle.load(pkl_file)
-        y_pred=self.model.predict(x)
-        acc=0
-        for i in range(0,len(y_pred)):
-            if int(y_pred[i]-y[i])==0:
-                acc+=1
-        return ((float(acc)/len(y_pred))*100)
-
-
-    '''
+            return True
 
     def predict(self,model_id):
         try:
@@ -78,7 +63,8 @@ class linRegContainer(ModelContainer):
         except ConnectionFailure:
             print("\nCould not connect to server. \
                 Raised the following exception:\n{}".format(conn_e))
-        return(y)
+
+        return y
 
     def evaluate(self,y,y_pred):
         acc=0
