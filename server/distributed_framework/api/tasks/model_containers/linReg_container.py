@@ -11,7 +11,6 @@ from os.path import exists, join
 from sklearn.linear_model import LinearRegression
 from bson.binary import Binary
 from pickle import dumps as pdumps, loads as ploads
-import json
 import pdb
 
 class linRegContainer(ModelContainer):

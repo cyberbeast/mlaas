@@ -1,20 +1,29 @@
+###############################################################################
+# Author: Abhimanyu Banerjee
+# Project: Machine Learning as a Service
+# Date Created: 2/7/2017
+# 
+# File Description: This script implements a Support Vector Machine container 
+# through the model container template. It implements the train, test and 
+# evaluate methods of the model container template. 
+###############################################################################
+
 from __future__ import print_function
 
 #frame work specific dependencies
 from model_containers.model_container import ModelContainer
+from graph_containers.graph_builder import GraphBuilder
 from data_containers.data_loader import DataLoader
 from utils.gen_utils import load_pkl, save_pkl
 
 #third party libraries
 import numpy as np
 from os.path import exists, join
-from sklearn.linear_model import LinearRegression
 from bson.binary import Binary
 from pickle import dumps as pdumps, loads as ploads
-import json
 import pdb
 
-class linRegContainer(ModelContainer):
+class DeepContainer(ModelContainer):
     
     '''trains the model. Params: [], Returns: '''
     def train(self,model_cont, user_data_path):
@@ -31,7 +40,7 @@ class linRegContainer(ModelContainer):
             arch = model_cont['parameters']['arch']
 
             #train the model
-            clf = GraphContainer(arch)
+            clf = GraphBuilder(arch)
             clf.fit(dataset['features'], dataset['labels'])
             pkl_file = pdumps(clf)
             
