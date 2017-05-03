@@ -4,16 +4,11 @@ from __future__ import print_function
 from model_containers.model_container import ModelContainer
 from data_containers.data_loader import DataLoader
 from utils.gen_utils import load_pkl, save_pkl
-#from config.global_parameters import (data_path, HOST_NAME, DB_NAME,
- #                                      WEIGHTS_FNAME, USER_DATA_FNAME, COLL_NAME)
 
 #third party libraries
 import numpy as np
 from os.path import exists, join
 from sklearn.linear_model import LinearRegression
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
-from bson.objectid import ObjectId
 from bson.binary import Binary
 from pickle import dumps as pdumps, loads as ploads
 import json
@@ -21,28 +16,37 @@ import pdb
 
 class linRegContainer(ModelContainer):
     
+    '''trains the model. Params: [], Returns: '''
     def train(self,model_cont, user_data_path):
         
         train_status=model_cont['train_status']
         
         if train_status != "training":
-            data_loader = DataLoader()
 
-            alpha = model_cont['parameters']['alpha']
+            #load the data to train
+            data_loader = DataLoader()
             dataset = data_loader.load_user_data(user_data_path);
 
+            #load the model specific parameters
+            alpha = model_cont['parameters']['alpha']
+
+            #train the model
             clf = LinearRegression(alpha)
             clf.fit(dataset['features'], dataset['labels'])
             pkl_file = pdumps(clf)
-            #save_pkl(clf, data_path, WEIGHTS_FNAME)
+
+            #update the model object with the results of training
             model_cont['learned_model']=Binary(pkl_file)
             model_cont['train_status'] = "trained"
+            
             return model_cont
+        
         else:
+            
             print("Already Trained")
             return True
 
-    
+    '''makes predictions on data samples provided. Params: [], Returns: '''
     def predict(self,model_id):
         try:
             conn = MongoClient(HOST_NAME)
