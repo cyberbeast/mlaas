@@ -1,14 +1,14 @@
 version: "3"
-# networks:
-#   mynet:
+networks:
+  mynet:
 services:
   web_api:
     build:
       context: .
       dockerfile: Dockerfile
     hostname: web_api
-    # networks:
-    #   - mynet
+    networks:
+      - mynet
     ports:
       - "5000:5000"
     volumes:
@@ -25,8 +25,8 @@ services:
       dockerfile: Dockerfile-redis
     # image: redis
     hostname: redis
-    # networks:
-    #   - mynet
+    networks:
+      - mynet
     ports:
       - "6379:6379"
 
@@ -41,6 +41,6 @@ services:
       - redis
     depends_on:
       - redis
-    # networks:
-    #   - mynet
+    networks:
+      - mynet
     command: ./run_celery.sh

@@ -20,17 +20,18 @@ import json
 import pdb
 
 class linRegContainer(ModelContainer):
-    
+
     def train(self,model_cont, user_data_path):
-        
+
         train_status=model_cont['train_status']
-        
+
         if train_status != "training":
             data_loader = DataLoader()
 
             alpha = model_cont['parameters']['alpha']
             dataset = data_loader.load_user_data(user_data_path);
-
+            print("LOOK FOR THIS SHIT RIGHT HERE ***********")
+            print(dataset)
             clf = LinearRegression(alpha)
             clf.fit(dataset['features'], dataset['labels'])
             pkl_file = pdumps(clf)
@@ -56,7 +57,7 @@ class linRegContainer(ModelContainer):
 
 
     '''
-    
+
     def predict(self,model_id):
         try:
             conn = MongoClient(HOST_NAME)
@@ -66,10 +67,10 @@ class linRegContainer(ModelContainer):
             models = mlaas_db[COLL_NAME]
             model_cont = models.find_one({"_id": ObjectId(model_id)})
             assert model_cont, "Invalid model ID"
-            model_id=model_cont['_id'] 
+            model_id=model_cont['_id']
 
             train_status=model_cont['train_status']
-            
+
             if train_status == "trained":
                 clf = ploads(model_cont['learned_model'])
                 y = clf.predict(x_pred)
@@ -78,7 +79,7 @@ class linRegContainer(ModelContainer):
             print("\nCould not connect to server. \
                 Raised the following exception:\n{}".format(conn_e))
         return(y)
-    
+
     def evaluate(self,y,y_pred):
         acc=0
         for i in range(0,len(y_pred)):
@@ -86,5 +87,3 @@ class linRegContainer(ModelContainer):
                 acc+=1
         accuracy=float(acc)/len(y_pred)*100
         return accuracy
-
-

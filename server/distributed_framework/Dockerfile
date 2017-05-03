@@ -2,6 +2,7 @@ FROM python:latest
 MAINTAINER Sandesh Gade "sandeshgade@gmail.com"
 
 COPY . /app
+COPY ./api/tasks/config.json /app/api
 
 # install python dependencies
 RUN pip3 install -r /app/requirements.txt
