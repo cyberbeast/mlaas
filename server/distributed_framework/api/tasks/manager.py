@@ -1,6 +1,6 @@
 from __future__ import print_function
 import argparse
-from model_containers import linReg_container#, svm_container
+from model_containers import linReg_container, svm_container, deep_container
 from data_containers import data_processor
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
@@ -11,9 +11,10 @@ import pdb
 
 ##Unpacking config.json
 config = json.load(open('config.json'))
-HOST_NAME, DB_NAME, COLL_NAME, WEIGHTS_FNAME, USER_DATA_FNAME, data_path = config["HOST_NAME"], config["DB_NAME"], \
-                                                            config["COLL_NAME"], config["WEIGHTS_FNAME"], \
-                                                            config["USER_DATA_FNAME"], config["data_path"]
+HOST_NAME, DB_NAME, COLL_NAME, WEIGHTS_FNAME = config["HOST_NAME"], config["DB_NAME"], \
+                                                config["COLL_NAME"], 
+USER_DATA_FNAME, data_path = config["WEIGHTS_FNAME"], config["USER_DATA_FNAME"], \
+                                config["data_path"] 
 
 '''define a dict mapping for dealing with which model container to activate
 	depending on ___ '''
@@ -21,7 +22,8 @@ def type_to_model_mapper(model_type):
 
     model_switcher = {
         'svm': lambda: svm_container.SVMContainer(),
-        'Linear Regression': lambda: linReg_container.linRegContainer() #TODO: verify if correct name
+        'Linear Regression': lambda: linReg_container.linRegContainer(),
+        'Deep Model': lambda: deep_container.DeepContainer()
     }
 
     #get the correct model container object creating function
