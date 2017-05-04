@@ -27,11 +27,13 @@ WORKDIR /api
 
 COPY ./api/tasks /api/tasks
 COPY run_celery.sh /api
+COPY ./api/tasks/config.json /api
+COPY ./api/tasks/data/sample.csv /api/tasks/data/
+COPY ./api/tasks/data/data_samples.p /api/tasks
 # RUN ls
 # RUN pwd
 RUN pip3 install -U -r /api/tasks/requirements.txt
 # RUN sleep 10
-RUN cd tasks
-RUN cd tasks
-RUN ls
+
+RUN ls -la
 RUN chmod +x run_celery.sh
