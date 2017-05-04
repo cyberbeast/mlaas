@@ -11,6 +11,7 @@ from __future__ import print_function
 from data_containers.data_container import DataContainer
 from utils.gen_utils import load_pkl, save_pkl
 from os.path import exists, join
+from sklearn.datasets import load_boston
 import pdb
 import numpy as np
 import pandas as pd
@@ -21,11 +22,14 @@ class DataLoader(DataContainer):
     def load_user_data(self, data_path):
 
         #TODO: check for path name corruption
-        return load_pkl(data_path)
+        if data_path:
+            return load_pkl(data_path)
+        else:
+            return load_boston
 
     '''save data in user's directory. Params: [], Returns: '''
     def save_user_data(self, data_path, data):
-        
+
         #TODO: define template for path for data storage
         assert exists(data_path), "\nData directory does not exist"
 

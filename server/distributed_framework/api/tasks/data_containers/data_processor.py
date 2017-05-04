@@ -17,5 +17,4 @@ class DataProcessor:
         features = full_data.drop(labels=full_data.columns.values[-1], axis=1)
         labels=full_data.iloc[:,-1]
         save_pkl({"features" : features.as_matrix(),"labels": labels.as_matrix()}, dump_path)
-        print("\nPickle file created with name: " + pickle_name)
-        return False
+        print("\nPickle file created with path: " + dump_path)

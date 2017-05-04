@@ -1,5 +1,5 @@
 import hug
-from tasks.tasks import train_model_task
+from tasks.tasks import train_model_task, predict_model_task
 from celery.result import AsyncResult
 import requests
 # from pymongo.objectid import ObjectId
@@ -16,3 +16,7 @@ def train(objectid):
 @hug.get('/status')
 def status(id):
     return AsyncResult(id).ready()
+
+@hug.post('/predict', output=hug.output_format.json)
+def predict_endpoint(objectid, predict_data):
+    return {'predictions': predict_model_task(objectid, predict_data)}

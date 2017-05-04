@@ -21,7 +21,7 @@ import pdb
 
 class linRegContainer(ModelContainer):
 
-    def train(self,model_cont, user_data_path):
+    def train(self, model_cont, user_data=None):
 
         train_status=model_cont['train_status']
 
@@ -30,39 +30,29 @@ class linRegContainer(ModelContainer):
 
             alpha = model_cont['parameters']['alpha']
             dataset = data_loader.load_user_data(user_data_path);
-            print("LOOK FOR THIS SHIT RIGHT HERE ***********")
-            print(dataset)
             clf = LinearRegression(alpha)
             clf.fit(dataset['features'], dataset['labels'])
             pkl_file = pdumps(clf)
             #save_pkl(clf, data_path, WEIGHTS_FNAME)
-            model_cont['learned_model']=Binary(pkl_file)
+            model_cont['learned_model']=pkl_file
             model_cont['train_status'] = "trained"
             return model_cont
         else:
             print("Already Trained")
             return True
 
-    def predict(self,model_id):
-        try:
-            conn = MongoClient(HOST_NAME)
+    def predict(self,model_cont, x_pred):
 
-            print('\nConnection Successful')
-            mlaas_db = conn[DB_NAME]
-            models = mlaas_db[COLL_NAME]
-            model_cont = models.find_one({"_id": ObjectId(model_id)})
-            assert model_cont, "Invalid model ID"
-            model_id=model_cont['_id']
+        train_status=model_cont['train_status']
 
-            train_status=model_cont['train_status']
+        if train_status == "trained":
 
-            if train_status == "trained":
-                clf = ploads(model_cont['learned_model'])
-                y = clf.predict(x_pred)
-                print("Predicted Value:",y)
-        except ConnectionFailure:
-            print("\nCould not connect to server. \
-                Raised the following exception:\n{}".format(conn_e))
+            x_pred = np.array(x_pred)
+            clf = ploads(model_cont['learned_model'])
+            y = clf.predict(x_pred)
+
+        else:
+            y = False
 
         return y
 

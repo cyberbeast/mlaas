@@ -56,6 +56,18 @@ router.get('/', (req, res) => {
   res.send('api works');
 });
 
+// GET api for downloading the learned model
+router.get('/download', (req, res) => {
+  console.log('GET: \t [/download] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+  console.log(req.query.id);
+  mlmodel.findById(req.query.id, function(err, model){
+    res.setHeader('Content-Type', "application/octet-stream");
+    res.setHeader('Content-Disposition', 'attachment; filename=yourmodel.p');
+    console.log(typeof(model.learned_model));
+    res.send(model.learned_model);
+  });
+});
+
 // GET route for checking cold start condition
 // router.get('/initStatus', (req, res) => {
 //   console.log('GET: \t [/initStatus] \t\t ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));

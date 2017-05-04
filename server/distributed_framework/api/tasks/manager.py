@@ -32,7 +32,7 @@ def type_to_model_mapper(model_type):
 '''access db for document related to given model id, checks type of container,
 creates object for corresponding container and calls the relevant method while
 passing the model id to it'''
-def train_model(model_id):
+def train_model(model_id, data=None):
 
     try:
         #create connection to server
@@ -47,12 +47,43 @@ def train_model(model_id):
         model = type_to_model_mapper(model_type)
 
         #train the model
-        model_cont = model.train(model_cont, join(data_path, USER_DATA_FNAME))
+        if data:
+            model_cont = model.train(model_cont, user_data=data)
+        else:
+            model_cont = model.train(model_cont)
 
         #persist the updated metadata
         if model_cont:
             models.update({'_id': ObjectId(model_id)}, {'$set': model_cont}, upsert=False)
             return True
+        else:
+            return False
+
+    except ConnectionFailure as conn_e:
+        print("\nCould not connect to server. \
+                Raised the following exception:\n{}".format(conn_e))
+        return False
+
+def predict_on_model(model_id, data):
+
+    try:
+        #create connection to server
+        client = MongoClient(HOST_NAME)
+        db = client[DB_NAME]
+        models = db[COLL_NAME]
+        model_cont = models.find_one({"_id": ObjectId(model_id)})
+        assert model_cont, "Invalid model ID"
+        model_type = model_cont['type']
+
+        #get the correct model object
+        model = type_to_model_mapper(model_type)
+
+        #predict on test data
+        predictions = model.predict(model_cont, data)
+
+        #persist the updated metadata
+        if predictions is not False:
+            return predictions
         else:
             return False
 
