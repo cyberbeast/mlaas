@@ -1,6 +1,6 @@
 # Mlaas
-
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.30.
+Platform Architecture
+<img src="https://www.lucidchart.com/publicSegments/view/01a43501-c66b-482e-89a1-325c80a30bde/image.png" />
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
